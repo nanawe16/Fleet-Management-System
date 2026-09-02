@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DirectionsCarFilled, LocalGasStation, AltRoute, Build } from "@mui/icons-material";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardLayout from "../../Layouts/DashboardLayout";
 import StatCard from "../../components/dashboard/StatCard";
 import { getTrips } from "../../services/tripService";
 import { getVehicles } from "../../services/vehicleService";

@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DirectionsCarFilled, Build, Warning, Inventory2 } from "@mui/icons-material";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardLayout from "../../Layouts/DashboardLayout";
 import StatCard from "../../components/dashboard/StatCard";
 import { getVehicles } from "../../services/vehicleService";
 import { getMaintenanceRecords } from "../../services/maintenanceService";

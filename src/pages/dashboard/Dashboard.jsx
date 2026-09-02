@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardLayout from "../../Layouts/DashboardLayout";
 import StatCard from "../../components/dashboard/StatCard";
 import { getDashboardData } from "../../services/dashboardService";
 import { getCurrentUser } from "../../services/authService";

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardLayout from "../../Layouts/DashboardLayout";
 import SummaryCard from "../../components/reports/SummaryCard";
 import FuelReport from "../../components/reports/FuelReport";
 import MaintenanceReport from "../../components/reports/MaintenanceReport";

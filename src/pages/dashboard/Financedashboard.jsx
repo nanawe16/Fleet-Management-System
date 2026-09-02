@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { LocalGasStation, Build, Assessment, HourglassTop } from "@mui/icons-material";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardLayout from "../../Layouts/DashboardLayout";
 import StatCard from "../../components/dashboard/StatCard";
 import { getFuelRecords } from "../../services/fuelService";
 import { getMaintenanceRecords } from "../../services/maintenanceService";

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardLayout from "../../Layouts/DashboardLayout";
 import UserForm from "../../components/forms/UserForm";
 import { getAllUsers, updateUserProfile, createUser, deleteUser, updateUserEmail } from "../../services/userService";
 import { getCurrentUser } from "../../services/authService";

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardLayout from "../../Layouts/DashboardLayout";
 import AccidentTable from "../../components/tables/AccidentTable";
 import AccidentForm from "../../components/forms/AccidentForm";
 import {
