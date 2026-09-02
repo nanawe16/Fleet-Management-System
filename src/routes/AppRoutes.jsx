@@ -15,7 +15,7 @@ import GpsTracking from "../pages/Gpstracking/Gpstracking";
 import Notifications from "../pages/Notifications/Notifications";
 import Inventory from "../pages/Inventory/Inventory";
 import Accidents from "../pages/accidents/accidents";
-import UserManagement from "../pages/users/userManagement";
+import UserManagement from "../pages/users/UserManagement";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import PasswordRecovery from "../pages/auth/PasswordRecovery";
 import { roles } from "../config/permissions";
