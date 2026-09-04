@@ -38,7 +38,12 @@ const ALL_MENU_ITEMS = [
   { name: "Settings", path: "/settings", icon: <Settings />, roles: roles.settings },
 ];
 
-const Sidebar = () => {
+// Below this viewport width, the sidebar stops sitting inline in the
+// flex row and instead becomes an off-canvas drawer that slides over
+// the content, opened via the hamburger button in the Navbar.
+const MOBILE_BREAKPOINT = 900;
+
+const Sidebar = ({ mobileOpen = false, onClose = () => {}, isMobile = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = getCurrentUser();
@@ -58,23 +63,55 @@ const Sidebar = () => {
     navigate("/login");
   };
 
+  const handleLinkClick = () => {
+    // On mobile the drawer should close itself as soon as a destination
+    // is picked, so the user isn't left staring at the overlay.
+    if (isMobile) onClose();
+  };
+
   return (
-    <div
-      style={{
-        width: "250px",
-        flexShrink: 0,
-        background: "#0F172A",
-        color: "white",
-        height: "100vh",
-        padding: "20px",
-        display: "flex",
-        flexDirection: "column",
-        boxSizing: "border-box",
-      }}
-    >
-      <h2 style={{ marginBottom: "8px", fontFamily: "'Poppins', sans-serif", fontWeight: 600, letterSpacing: "0.5px" }}>
-        🚗 FMS
-      </h2>
+    <>
+      {/* Backdrop: only rendered on mobile while the drawer is open, so
+          tapping outside the menu closes it. Desktop never sees this. */}
+      {isMobile && mobileOpen && (
+        <div
+          onClick={onClose}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 1200,
+          }}
+        />
+      )}
+
+      <div
+        style={{
+          width: "250px",
+          flexShrink: 0,
+          background: "#0F172A",
+          color: "white",
+          height: "100vh",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          boxSizing: "border-box",
+          ...(isMobile
+            ? {
+                position: "fixed",
+                top: 0,
+                left: 0,
+                zIndex: 1201,
+                transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
+                transition: "transform 0.2s ease",
+                boxShadow: mobileOpen ? "2px 0 12px rgba(0,0,0,0.3)" : "none",
+              }
+            : {}),
+        }}
+      >
+        <h2 style={{ marginBottom: "8px", fontFamily: "'Poppins', sans-serif", fontWeight: 600, letterSpacing: "0.5px" }}>
+          🚗 FMS
+        </h2>
 
       {user && (
         <div style={{ marginBottom: "24px", opacity: 0.7, fontSize: "13px" }}>
@@ -113,6 +150,7 @@ const Sidebar = () => {
             <Link
               key={item.name}
               to={item.path}
+              onClick={handleLinkClick}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -161,8 +199,10 @@ const Sidebar = () => {
         <Logout />
         Logout
       </button>
-    </div>
+      </div>
+    </>
   );
 };
 
+export { MOBILE_BREAKPOINT };
 export default Sidebar;

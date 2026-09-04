@@ -18,6 +18,7 @@ import {
   Notifications as NotificationsIcon,
   Settings as SettingsIcon,
   Logout as LogoutIcon,
+  Menu as MenuIcon,
 } from "@mui/icons-material";
 import { supabase } from "../lib/supabase";
 import { getUnreadCount } from "../services/notificationService";
@@ -42,7 +43,7 @@ const formatRole = (role) => {
   return role.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width:600px)");
   const user = getCurrentUser();
@@ -78,6 +79,17 @@ const Navbar = () => {
   return (
     <AppBar position="static" elevation={1} color="inherit">
       <Toolbar>
+        {showMenuButton && (
+          <IconButton
+            onClick={onMenuClick}
+            aria-label="Open menu"
+            edge="start"
+            sx={{ mr: 1 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+
         <Typography
           variant="h6"
           noWrap
