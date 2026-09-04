@@ -31,10 +31,14 @@ const StatCard = ({ title, value, color, icon, trend }) => {
   return (
     <Card
       sx={{
-        minWidth: 220,
-        borderLeft: `6px solid ${color}`,
-        borderRadius: 3,
-        boxShadow: 3,
+        borderLeft: `4px solid ${color}`,
+        borderRadius: 2,
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        cursor: "pointer",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: 6,
+        },
       }}
     >
       <CardContent>
