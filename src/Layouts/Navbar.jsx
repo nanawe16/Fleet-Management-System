@@ -19,6 +19,7 @@ import {
   Settings as SettingsIcon,
   Logout as LogoutIcon,
   Menu as MenuIcon,
+  DirectionsBus as DirectionsBusIcon,
 } from "@mui/icons-material";
 import { supabase } from "../lib/supabase";
 import { getUnreadCount } from "../services/notificationService";
@@ -90,21 +91,53 @@ const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
           </IconButton>
         )}
 
-        <Typography
-          variant="h6"
-          noWrap
-          sx={{
-            flexGrow: 1,
-            fontWeight: 600,
-            letterSpacing: "0.3px",
-            background: "linear-gradient(90deg, #1976d2, #0F172A)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          {isMobile ? "OSU Fleet Management" : "Oromia State University Fleet Management System"}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.2, flexGrow: 1, minWidth: 0 }}>
+          <Box
+            sx={{
+              width: 34,
+              height: 34,
+              flexShrink: 0,
+              borderRadius: "8px",
+              background: "linear-gradient(135deg, #1976d2, #0F172A)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#fff",
+            }}
+          >
+            <DirectionsBusIcon fontSize="small" />
+          </Box>
+
+          <Box sx={{ minWidth: 0 }}>
+            <Typography
+              noWrap
+              sx={{
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "1.5px",
+                color: "text.secondary",
+                textTransform: "uppercase",
+                lineHeight: 1.2,
+              }}
+            >
+              Oromia State University
+            </Typography>
+            <Typography
+              noWrap
+              sx={{
+                fontSize: "18px",
+                fontWeight: 700,
+                lineHeight: 1.2,
+                background: "linear-gradient(90deg, #1976d2, #0F172A)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              fleet management system
+            </Typography>
+          </Box>
+        </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <IconButton onClick={() => navigate("/notifications")} aria-label="Notifications">
