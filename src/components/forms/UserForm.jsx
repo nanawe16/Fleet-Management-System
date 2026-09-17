@@ -20,6 +20,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { getDepartments } from "../../services/departmentService";
+import { getRoleLabel } from "../../config/roleLabels";
 
 // Cheap, dependency-free random password — not for anything beyond a
 // one-time credential the admin hands off and the person is expected to
@@ -128,7 +129,7 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
       newErrors.department_id =
         form.role === "requester"
           ? "A Requester must be assigned a department"
-          : "A Department Head must be assigned a department";
+          : "An Office Head must be assigned a department";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -236,12 +237,12 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
           >
             {ROLE_OPTIONS.map((r) => (
               <MenuItem key={r} value={r}>
-                {r.replace(/_/g, " ")}
+                {getRoleLabel(r)}
               </MenuItem>
             ))}
           </TextField>
 
-          {/* Only Department Head and Requester's access is actually
+          {/* Only Office Head and Requester's access is actually
               scoped by department today (Row-Level Security checks
               profiles.department_id for them specifically) — showing
               this for every role would imply it does something it

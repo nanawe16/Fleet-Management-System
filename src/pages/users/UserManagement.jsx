@@ -32,6 +32,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
 import GroupIcon from "@mui/icons-material/Group";
+import { getRoleLabel } from "../../config/roleLabels";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -180,7 +181,7 @@ const UserManagement = () => {
                   <TableCell>{user.full_name || "—"}</TableCell>
                   <TableCell>{user.phone || "—"}</TableCell>
                   <TableCell>
-                    <Chip label={user.role.replace(/_/g, " ")} size="small" />
+                    <Chip label={getRoleLabel(user.role)} size="small" />
                   </TableCell>
                   <TableCell>
                     {user.is_active ? (

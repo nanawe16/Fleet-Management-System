@@ -1,0 +1,73 @@
+{
+  "app": {
+    "universityName": "Oromia State University",
+    "systemName": "fleet management system"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "status": "Status",
+    "all": "All",
+    "actions": "Actions",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "noDataFound": "No data found.",
+    "language": "Language",
+    "selectLanguage": "Select Language"
+  },
+  "languages": {
+    "en": "English",
+    "am": "Amharic",
+    "om": "Afaan Oromoo"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "vehicles": "Vehicles",
+    "drivers": "Drivers",
+    "departments": "Departments",
+    "transportRequests": "Transport Requests",
+    "tripManagement": "Trip Management",
+    "fuel": "Fuel",
+    "maintenance": "Maintenance",
+    "inventory": "Inventory",
+    "accidents": "Accidents",
+    "gpsTracking": "GPS Tracking",
+    "notifications": "Notifications",
+    "reports": "Reports",
+    "userManagement": "User Management",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "updated": "Updated",
+    "vehicles": "Vehicles",
+    "drivers": "Drivers",
+    "activeTrips": "Active Trips",
+    "pendingRequests": "Pending Requests",
+    "tripsLast7Days": "Trips — Last 7 Days",
+    "vehicleStatus": "Vehicle Status",
+    "fuelConsumption": "Fuel Consumption — Last 6 Months (liters)",
+    "recentActivity": "Recent Activity",
+    "noVehiclesYet": "No vehicles yet."
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile",
+    "system": "System",
+    "notificationsTab": "Notifications",
+    "languageTab": "Language",
+    "fullName": "Full Name",
+    "phone": "Phone",
+    "email": "Email",
+    "changePassword": "Change Password",
+    "saveChanges": "Save Changes"
+  }
+}

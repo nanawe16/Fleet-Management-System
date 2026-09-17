@@ -7,6 +7,7 @@ import DriverDashboard from "./DriverDashboard";
 import MechanicDashboard from "./MechanicDashboard";
 import FinanceDashboard from "./FinanceDashboard";
 import RequesterDashboard from "./RequesterDashboard";
+import LanguageSwitcher from "../../i18n/LanguageSwitcher";
 import {
   Typography,
   Box,
@@ -87,9 +88,12 @@ const Dashboard = () => {
     <DashboardLayout>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
         <Typography variant="h4">Dashboard</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Updated {new Date().toLocaleTimeString()}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <LanguageSwitcher size="small" showLabel={false} />
+          <Typography variant="body2" color="text.secondary">
+            Updated {new Date().toLocaleTimeString()}
+          </Typography>
+        </Box>
       </Box>
 
       {notice && (

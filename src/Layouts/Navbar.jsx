@@ -23,6 +23,7 @@ import {
 } from "@mui/icons-material";
 import { supabase } from "../lib/supabase";
 import { getUnreadCount } from "../services/notificationService";
+import { getRoleLabel } from "../config/roleLabels";
 
 const getCurrentUser = () => {
   const raw = localStorage.getItem("fms_user") || sessionStorage.getItem("fms_user");
@@ -37,11 +38,6 @@ const getCurrentUser = () => {
 const getInitial = (user) => {
   const source = user?.name || user?.email || "?";
   return source.trim().charAt(0).toUpperCase();
-};
-
-const formatRole = (role) => {
-  if (!role) return "User";
-  return role.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
 const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
@@ -156,7 +152,7 @@ const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
                   {user?.name || user?.email || "Guest"}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" component="div">
-                  {formatRole(user?.role)}
+                  {getRoleLabel(user?.role)}
                 </Typography>
                 {["department_head", "requester"].includes(user?.role) && user?.department_name && (
                   <Typography variant="caption" color="text.secondary" component="div">

@@ -13,6 +13,7 @@ import {
   transportApproveRequest,
   transportRejectRequest,
   allocateRequest,
+  getPassengerManifestUrl,
 } from "../../services/requestService";
 import { getVehicles } from "../../services/vehicleService";
 import { getDrivers } from "../../services/driverService";
@@ -112,6 +113,12 @@ const Requests = () => {
   const validateRequest = (request) => {
     if (!request.requester?.trim()) return "Requester is required.";
     if (!request.departmentId) return "Department is required.";
+    if (!request.passengerCount || Number(request.passengerCount) < 1) return "Enter at least one passenger.";
+    if (!request.passengerList?.trim() && !request.passengerManifestFile && !request.passengerManifestPath) {
+      return "Add passenger names and contacts, or upload a PDF manifest.";
+    }
+    if (!request.task?.trim()) return "Task is required.";
+    if (!request.startLocation?.trim()) return "Starting location is required.";
     if (!request.destination?.trim()) return "Destination is required.";
     if (!request.date) return "Date is required.";
     return null;
@@ -164,6 +171,15 @@ const Requests = () => {
     setOpen(true);
   };
 
+  const handleOpenManifest = async (request) => {
+    try {
+      const url = await getPassengerManifestUrl(request.passengerManifestPath);
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      setSnackbar({ open: true, message: err.message || "Couldn't open the passenger list PDF.", severity: "error" });
+    }
+  };
+
   const handleSubmitDraft = async (id) => {
     setProcessingId(id);
     try {
@@ -212,7 +228,7 @@ const Requests = () => {
     try {
       const updated = await departmentApproveRequest(id);
       setRequests(requests.map((r) => (r.id === id ? updated : r)));
-      setSnackbar({ open: true, message: "Request approved by department.", severity: "success" });
+      setSnackbar({ open: true, message: "Request approved by Office Head.", severity: "success" });
     } catch (err) {
       setSnackbar({
         open: true,
@@ -319,6 +335,8 @@ const Requests = () => {
     const matchesSearch =
       request.requester.toLowerCase().includes(search.toLowerCase()) ||
       request.department.toLowerCase().includes(search.toLowerCase()) ||
+      request.task.toLowerCase().includes(search.toLowerCase()) ||
+      request.startLocation.toLowerCase().includes(search.toLowerCase()) ||
       request.destination.toLowerCase().includes(search.toLowerCase());
 
     const matchesStatus = statusFilter === "All" || request.status === statusFilter;
@@ -377,6 +395,7 @@ const Requests = () => {
           onTransportReject={isTransportManager ? openRejectDialog : undefined}
           onAllocate={isTransportManager ? openAllocateDialog : undefined}
           onSubmit={handleSubmitDraft}
+          onOpenManifest={handleOpenManifest}
           currentUserId={currentUser?.id}
           // A requester can only edit their own request while it's still
           // DRAFT (matches the DB's update policy) — everyone else who

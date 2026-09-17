@@ -1,0 +1,73 @@
+{
+  "app": {
+    "universityName": "ኦሮሚያ ክልል ዩኒቨርሲቲ",
+    "systemName": "የተሽከርካሪ አስተዳደር ስርዓት"
+  },
+  "common": {
+    "save": "አስቀምጥ",
+    "cancel": "ይቅር",
+    "add": "ጨምር",
+    "edit": "አርትዕ",
+    "delete": "ሰርዝ",
+    "search": "ፍለጋ",
+    "filter": "አጣራ",
+    "status": "ሁኔታ",
+    "all": "ሁሉም",
+    "actions": "ተግባራት",
+    "confirm": "አረጋግጥ",
+    "yes": "አዎ",
+    "no": "አይ",
+    "loading": "በመጫን ላይ...",
+    "noDataFound": "ምንም መረጃ አልተገኘም።",
+    "language": "ቋንቋ",
+    "selectLanguage": "ቋንቋ ይምረጡ"
+  },
+  "languages": {
+    "en": "እንግሊዝኛ",
+    "am": "አማርኛ",
+    "om": "አፋን ኦሮሞ"
+  },
+  "sidebar": {
+    "dashboard": "ዳሽቦርድ",
+    "vehicles": "ተሽከርካሪዎች",
+    "drivers": "ሾፌሮች",
+    "departments": "ክፍሎች",
+    "transportRequests": "የትራንስፖርት ጥያቄዎች",
+    "tripManagement": "የጉዞ አስተዳደር",
+    "fuel": "ነዳጅ",
+    "maintenance": "ጥገና",
+    "inventory": "የእቃ ክምችት",
+    "accidents": "አደጋዎች",
+    "gpsTracking": "የጂ.ፒ.ኤስ መከታተል",
+    "notifications": "ማሳወቂያዎች",
+    "reports": "ሪፖርቶች",
+    "userManagement": "የተጠቃሚ አስተዳደር",
+    "settings": "ቅንብሮች",
+    "logout": "ውጣ"
+  },
+  "dashboard": {
+    "title": "ዳሽቦርድ",
+    "updated": "ተዘምኗል",
+    "vehicles": "ተሽከርካሪዎች",
+    "drivers": "ሾፌሮች",
+    "activeTrips": "ንቁ ጉዞዎች",
+    "pendingRequests": "በመጠባበቅ ላይ ያሉ ጥያቄዎች",
+    "tripsLast7Days": "ጉዞዎች — ያለፉት 7 ቀናት",
+    "vehicleStatus": "የተሽከርካሪ ሁኔታ",
+    "fuelConsumption": "የነዳጅ ፍጆታ — ያለፉት 6 ወራት (ሊትር)",
+    "recentActivity": "የቅርብ ጊዜ እንቅስቃሴ",
+    "noVehiclesYet": "እስካሁን ተሽከርካሪ የለም።"
+  },
+  "settings": {
+    "title": "ቅንብሮች",
+    "profile": "መገለጫ",
+    "system": "ስርዓት",
+    "notificationsTab": "ማሳወቂያዎች",
+    "languageTab": "ቋንቋ",
+    "fullName": "ሙሉ ስም",
+    "phone": "ስልክ",
+    "email": "ኢሜይል",
+    "changePassword": "የይለፍ ቃል ቀይር",
+    "saveChanges": "ለውጦችን አስቀምጥ"
+  }
+}

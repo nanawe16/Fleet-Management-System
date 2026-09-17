@@ -5,6 +5,7 @@ import SystemSettings from "../../components/settings/SystemSettings";
 import NotificationSettings from "../../components/settings/NotificationSettings";
 import { Typography, Tabs, Tab, Box } from "@mui/material";
 import { getCurrentUser } from "../../services/authService";
+import LanguageSwitcher from "../../i18n/LanguageSwitcher";
 
 const Settings = () => {
   const [tab, setTab] = useState(0);
@@ -16,6 +17,17 @@ const Settings = () => {
     { label: "Profile", content: <ProfileSettings /> },
     ...(isAdmin ? [{ label: "System", content: <SystemSettings /> }] : []),
     { label: "Notifications", content: <NotificationSettings /> },
+    {
+      label: "Language",
+      content: (
+        <Box sx={{ maxWidth: 320 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            Choose the language used across the app.
+          </Typography>
+          <LanguageSwitcher showLabel={false} />
+        </Box>
+      ),
+    },
   ];
 
   return (

@@ -18,7 +18,12 @@ const emptyRequest = {
   department: "",
   departmentId: "",
   requester: "",
+  passengerCount: "",
+  passengerList: "",
+  task: "",
+  startLocation: "",
   destination: "",
+  passengerManifestFile: null,
   date: "",
 };
 
@@ -86,6 +91,14 @@ const RequestForm = ({ open, handleClose, onSave, initialData, saving = false })
 
     if (!request.departmentId) newErrors.departmentId = "Department is required";
     if (!request.requester.trim()) newErrors.requester = "Requester is required";
+    if (!request.passengerCount || Number(request.passengerCount) < 1) {
+      newErrors.passengerCount = "Enter at least one passenger";
+    }
+    if (!request.passengerList.trim() && !request.passengerManifestFile && !request.passengerManifestPath) {
+      newErrors.passengerList = "Add passenger names and contacts, or upload a PDF manifest";
+    }
+    if (!request.task.trim()) newErrors.task = "Task is required";
+    if (!request.startLocation.trim()) newErrors.startLocation = "Starting location is required";
     if (!request.destination.trim()) newErrors.destination = "Destination is required";
     if (!request.date) newErrors.date = "Date is required";
 
@@ -99,6 +112,22 @@ const RequestForm = ({ open, handleClose, onSave, initialData, saving = false })
     // still fail. The parent closes this dialog itself once the save
     // actually succeeds.
     onSave?.(request);
+  };
+
+  const handleManifestChange = (event) => {
+    const file = event.target.files?.[0] || null;
+    if (file && file.type !== "application/pdf") {
+      setErrors((prev) => ({ ...prev, passengerManifestFile: "Only PDF files are allowed" }));
+      event.target.value = "";
+      return;
+    }
+    if (file && file.size > 10 * 1024 * 1024) {
+      setErrors((prev) => ({ ...prev, passengerManifestFile: "The PDF must be 10 MB or smaller" }));
+      event.target.value = "";
+      return;
+    }
+    setRequest((prev) => ({ ...prev, passengerManifestFile: file }));
+    setErrors((prev) => ({ ...prev, passengerManifestFile: "" }));
   };
 
   return (
@@ -140,6 +169,63 @@ const RequestForm = ({ open, handleClose, onSave, initialData, saving = false })
             onChange={handleChange}
             error={!!errors.requester}
             helperText={errors.requester}
+            fullWidth
+          />
+
+          <TextField
+            label="Number of Passengers"
+            name="passengerCount"
+            type="number"
+            value={request.passengerCount}
+            onChange={handleChange}
+            error={!!errors.passengerCount}
+            helperText={errors.passengerCount || "Include everyone travelling, including the requester."}
+            inputProps={{ min: 1, step: 1 }}
+            fullWidth
+          />
+
+          <TextField
+            label="Passenger List & Contacts"
+            name="passengerList"
+            value={request.passengerList}
+            onChange={handleChange}
+            error={!!errors.passengerList}
+            helperText={errors.passengerList || "Add each passenger's name and phone number, or upload the list as a PDF below."}
+            multiline
+            minRows={3}
+            fullWidth
+          />
+
+          <Button component="label" variant="outlined" sx={{ alignSelf: "flex-start" }}>
+            Upload passenger list PDF (optional)
+            <input hidden type="file" accept="application/pdf,.pdf" onChange={handleManifestChange} />
+          </Button>
+          {(request.passengerManifestFile?.name || initialData?.passengerManifestName) && (
+            <Alert severity="info" sx={{ py: 0 }}>
+              {request.passengerManifestFile?.name || `Current file: ${initialData.passengerManifestName}`}
+            </Alert>
+          )}
+          {errors.passengerManifestFile && <Alert severity="error" sx={{ py: 0 }}>{errors.passengerManifestFile}</Alert>}
+
+          <TextField
+            label="Task / Purpose"
+            name="task"
+            value={request.task}
+            onChange={handleChange}
+            error={!!errors.task}
+            helperText={errors.task}
+            multiline
+            minRows={2}
+            fullWidth
+          />
+
+          <TextField
+            label="Starting Location"
+            name="startLocation"
+            value={request.startLocation}
+            onChange={handleChange}
+            error={!!errors.startLocation}
+            helperText={errors.startLocation}
             fullWidth
           />
 

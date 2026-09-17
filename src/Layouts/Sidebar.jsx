@@ -19,6 +19,7 @@ import {
 import Business from "@mui/icons-material/Business";
 import { signOut, getCurrentUser } from "../services/authService";
 import { roles } from "../config/permissions";
+import { getRoleLabel } from "../config/roleLabels";
 
 const ALL_MENU_ITEMS = [
   { name: "Dashboard", path: "/dashboard", icon: <Dashboard />, roles: roles.dashboard },
@@ -116,7 +117,7 @@ const Sidebar = ({ mobileOpen = false, onClose = () => {}, isMobile = false }) =
       {user && (
         <div style={{ marginBottom: "24px", opacity: 0.7, fontSize: "13px" }}>
           {user.name || user.email}
-          {user.role && <div style={{ textTransform: "capitalize" }}>{user.role.replace(/_/g, " ")}</div>}
+          {user.role && <div>{getRoleLabel(user.role)}</div>}
           {["department_head", "requester"].includes(user.role) && user.department_name && (
             <div>{user.department_name}</div>
           )}

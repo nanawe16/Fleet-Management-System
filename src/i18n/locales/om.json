@@ -1,0 +1,73 @@
+{
+  "app": {
+    "universityName": "Yunivarsiitii Mootummaa Oromiyaa",
+    "systemName": "sirna bulchiinsa konkolaataa"
+  },
+  "common": {
+    "save": "Ol Kaa'i",
+    "cancel": "Dhiisi",
+    "add": "Ida'i",
+    "edit": "Gulaali",
+    "delete": "Haqi",
+    "search": "Barbaadi",
+    "filter": "Calaltuu",
+    "status": "Haala",
+    "all": "Hunda",
+    "actions": "Gochaalee",
+    "confirm": "Mirkaneessi",
+    "yes": "Eeyyee",
+    "no": "Lakki",
+    "loading": "Fe'aa jira...",
+    "noDataFound": "Odeeffannoon hin argamne.",
+    "language": "Afaan",
+    "selectLanguage": "Afaan Filadhu"
+  },
+  "languages": {
+    "en": "Ingiliffa",
+    "am": "Amaariffa",
+    "om": "Afaan Oromoo"
+  },
+  "sidebar": {
+    "dashboard": "Daashboordii",
+    "vehicles": "Konkolaattota",
+    "drivers": "Konkolaachiftoota",
+    "departments": "Damee",
+    "transportRequests": "Gaaffii Geejjibaa",
+    "tripManagement": "Bulchiinsa Imalaa",
+    "fuel": "Boba'aa",
+    "maintenance": "Suphaa",
+    "inventory": "Kuusaa Meeshaalee",
+    "accidents": "Balaa",
+    "gpsTracking": "Hordoffii GPS",
+    "notifications": "Beeksisa",
+    "reports": "Gabaasa",
+    "userManagement": "Bulchiinsa Fayyadamtootaa",
+    "settings": "Qindaa'ina",
+    "logout": "Ba'i"
+  },
+  "dashboard": {
+    "title": "Daashboordii",
+    "updated": "Haaromfame",
+    "vehicles": "Konkolaattota",
+    "drivers": "Konkolaachiftoota",
+    "activeTrips": "Imala Ta'aa Jiru",
+    "pendingRequests": "Gaaffii Eegamaa Jiru",
+    "tripsLast7Days": "Imalawwan — Guyyoota 7 Dabran",
+    "vehicleStatus": "Haala Konkolaataa",
+    "fuelConsumption": "Fayyadama Boba'aa — Ji'oota 6 Dabran (Liitira)",
+    "recentActivity": "Sochii Dhiyeenya",
+    "noVehiclesYet": "Ammatti konkolaataan hin jiru."
+  },
+  "settings": {
+    "title": "Qindaa'ina",
+    "profile": "Piroofaayilii",
+    "system": "Sirna",
+    "notificationsTab": "Beeksisa",
+    "languageTab": "Afaan",
+    "fullName": "Maqaa Guutuu",
+    "phone": "Bilbila",
+    "email": "Imeelii",
+    "changePassword": "Jecha Iccitii Jijjiiri",
+    "saveChanges": "Jijjiirama Ol Kaa'i"
+  }
+}

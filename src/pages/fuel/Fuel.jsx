@@ -241,7 +241,7 @@ const Fuel = () => {
     <DashboardLayout>
       <PageHeader
         title="Fuel Management"
-        buttonText="Add Fuel Record"
+        buttonText="Add Fuel Request"
         onAdd={canCreate ? () => setOpen(true) : undefined}
       />
 

@@ -1,3 +1,4 @@
+import { Fragment, useState } from "react";
 import {
   Table,
   TableHead,
@@ -12,6 +13,8 @@ import {
   Box,
   Typography,
   CircularProgress,
+  Collapse,
+  Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,6 +22,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 
 const statusColor = (status) => {
   switch (status) {
@@ -65,7 +70,9 @@ const RequestTable = ({
   currentUserId,
   restrictEditToOwnDraft = false,
   processingId,
+  onOpenManifest,
 }) => {
+  const [expandedId, setExpandedId] = useState(null);
   if (requests.length === 0) {
     return (
       <Paper sx={{ p: 5, textAlign: "center", borderRadius: 3 }}>
@@ -87,6 +94,9 @@ const RequestTable = ({
           <TableRow>
             <TableCell>Department</TableCell>
             <TableCell>Requester</TableCell>
+            <TableCell>Passengers</TableCell>
+            <TableCell>Task</TableCell>
+            <TableCell>Route</TableCell>
             <TableCell>Destination</TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Status</TableCell>
@@ -110,25 +120,29 @@ const RequestTable = ({
                 (request.status === "DRAFT" && request.requestedBy === currentUserId));
 
             return (
-              <TableRow key={request.id} hover>
-                <TableCell>{request.department}</TableCell>
-                <TableCell>{request.requester}</TableCell>
-                <TableCell>{request.destination}</TableCell>
-                <TableCell>{request.date}</TableCell>
+              <Fragment key={request.id}>
+                <TableRow key={request.id} hover>
+                  <TableCell>{request.department}</TableCell>
+                  <TableCell>{request.requester}</TableCell>
+                  <TableCell>{request.passengerCount || "—"}</TableCell>
+                  <TableCell>{request.task || "—"}</TableCell>
+                  <TableCell>{request.startLocation || "—"}</TableCell>
+                  <TableCell>{request.destination}</TableCell>
+                  <TableCell>{request.date}</TableCell>
 
-                <TableCell>
-                  <Chip label={statusLabel(request.status)} color={statusColor(request.status)} size="small" />
-                </TableCell>
+                  <TableCell>
+                    <Chip label={statusLabel(request.status)} color={statusColor(request.status)} size="small" />
+                  </TableCell>
 
-                <TableCell align="right">
-                  <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 0.5, alignItems: "center" }}>
+                  <TableCell align="right">
+                    <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 0.5, alignItems: "center" }}>
                     {isProcessing ? (
                       <CircularProgress size={20} sx={{ mx: 1 }} />
                     ) : (
                       <>
                         {canDepartmentAct && (
                           <>
-                            <Tooltip title="Approve (Department)">
+                            <Tooltip title="Approve (Office Head)">
                               <IconButton
                                 size="small"
                                 color="success"
@@ -181,14 +195,20 @@ const RequestTable = ({
                       </>
                     )}
 
-                    {canEditRow && (
+                      <Tooltip title={expandedId === request.id ? "Hide request details" : "View request details"}>
+                        <IconButton size="small" onClick={() => setExpandedId(expandedId === request.id ? null : request.id)}>
+                          <VisibilityIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+
+                      {canEditRow && (
                       <Tooltip title="Edit">
                         <IconButton size="small" onClick={() => onEdit(request)} disabled={isProcessing}>
                           <EditIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
                     )}
-                    {onDelete && (
+                      {onDelete && (
                       <Tooltip title="Delete">
                         <IconButton
                           size="small"
@@ -199,10 +219,35 @@ const RequestTable = ({
                           <DeleteIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                    )}
-                  </Box>
-                </TableCell>
-              </TableRow>
+                      )}
+                    </Box>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={9} sx={{ py: 0, borderBottom: expandedId === request.id ? undefined : 0 }}>
+                    <Collapse in={expandedId === request.id} timeout="auto" unmountOnExit>
+                      <Box sx={{ py: 2 }}>
+                        <Typography variant="subtitle2">Passenger list & contacts</Typography>
+                        <Typography variant="body2" whiteSpace="pre-line" sx={{ mb: 1 }}>
+                          {request.passengerList || "Not provided for this older request."}
+                        </Typography>
+                        {request.passengerManifestPath && onOpenManifest && (
+                          <Button
+                            size="small"
+                            startIcon={<PictureAsPdfIcon />}
+                            onClick={() => onOpenManifest(request)}
+                            sx={{ mb: 1 }}
+                          >
+                            Open passenger list PDF{request.passengerManifestName ? `: ${request.passengerManifestName}` : ""}
+                          </Button>
+                        )}
+                        <Typography variant="subtitle2">Task / purpose</Typography>
+                        <Typography variant="body2" whiteSpace="pre-line">{request.task || "Not provided for this older request."}</Typography>
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </Fragment>
             );
           })}
         </TableBody>

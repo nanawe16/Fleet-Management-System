@@ -10,6 +10,12 @@ const toAppShape = (row) => ({
   department: row.department_record?.name || row.department || "",
   departmentId: row.department_id || "",
   requester: row.requester,
+  passengerCount: row.passenger_count ?? "",
+  passengerList: row.passenger_list || "",
+  task: row.task || "",
+  startLocation: row.start_location || "",
+  passengerManifestPath: row.passenger_manifest_path || "",
+  passengerManifestName: row.passenger_manifest_name || "",
   destination: row.destination,
   date: row.request_date,
   status: row.status,
@@ -29,9 +35,31 @@ const toDbShape = (request) => ({
   department: request.department,
   department_id: request.departmentId || null,
   requester: request.requester,
+  passenger_count: Number(request.passengerCount),
+  passenger_list: request.passengerList,
+  task: request.task,
+  start_location: request.startLocation,
   destination: request.destination,
   request_date: request.date,
 });
+
+const MANIFEST_BUCKET = "passenger-manifests";
+
+const uploadPassengerManifest = async (file, userId, requestId) => {
+  if (!file) return {};
+  if (file.type !== "application/pdf" || file.size > 10 * 1024 * 1024) {
+    throw new Error("Passenger manifest must be a PDF no larger than 10 MB.");
+  }
+
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const path = `${userId}/${requestId}/${Date.now()}-${safeName}`;
+  const { error } = await supabase.storage.from(MANIFEST_BUCKET).upload(path, file, {
+    contentType: "application/pdf",
+    upsert: false,
+  });
+  if (error) throw error;
+  return { passenger_manifest_path: path, passenger_manifest_name: file.name };
+};
 
 /**
  * Fetch all transport requests.
@@ -55,9 +83,11 @@ const createRequestWithStatus = async (request, status) => {
   const { data: authData, error: authError } = await supabase.auth.getUser();
   if (authError) throw authError;
 
+  const requestId = crypto.randomUUID();
+  const manifest = await uploadPassengerManifest(request.passengerManifestFile, authData.user?.id, requestId);
   const { data, error } = await supabase
     .from("transport_requests")
-    .insert({ ...toDbShape(request), status, requested_by: authData.user?.id || null })
+    .insert({ id: requestId, ...toDbShape(request), ...manifest, status, requested_by: authData.user?.id || null })
     .select()
     .single();
 
@@ -82,15 +112,24 @@ export const submitRequest = async (id) => {
  * exclusively through the workflow functions below.
  */
 export const updateRequest = async (id, request) => {
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError) throw authError;
+  const manifest = await uploadPassengerManifest(request.passengerManifestFile, authData.user?.id, id);
   const { data, error } = await supabase
     .from("transport_requests")
-    .update(toDbShape(request))
+    .update({ ...toDbShape(request), ...manifest })
     .eq("id", id)
     .select()
     .single();
 
   if (error) throw error;
   return toAppShape(data);
+};
+
+export const getPassengerManifestUrl = async (path) => {
+  const { data, error } = await supabase.storage.from(MANIFEST_BUCKET).createSignedUrl(path, 60 * 5);
+  if (error) throw error;
+  return data.signedUrl;
 };
 
 export const deleteRequest = async (id) => {
