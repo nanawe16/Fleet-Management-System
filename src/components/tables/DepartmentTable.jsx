@@ -22,7 +22,7 @@ const DepartmentTable = ({ departments, onEdit, onDelete }) => {
       <Paper sx={{ p: 5, textAlign: "center", borderRadius: 3 }}>
         <BusinessIcon sx={{ fontSize: 40, color: "text.disabled", mb: 1 }} />
         <Typography variant="body1" color="text.secondary">
-          No departments found.
+          No work units found.
         </Typography>
         <Typography variant="body2" color="text.disabled">Try adjusting your search or filter.</Typography>
       </Paper>
@@ -34,7 +34,7 @@ const DepartmentTable = ({ departments, onEdit, onDelete }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Department</TableCell>
+            <TableCell>Work Unit</TableCell>
             <TableCell>Manager</TableCell>
             <TableCell>Phone</TableCell>
             <TableCell>Status</TableCell>

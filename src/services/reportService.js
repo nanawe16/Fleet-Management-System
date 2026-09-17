@@ -116,7 +116,7 @@ export const getRequestReport = async (startDate, endDate) => {
   // silently falling through this count before).
   const counts = {
     Submitted: 0,
-    "Department Approved": 0,
+    "Work Unit Approved": 0,
     "Transport Approved": 0,
     Allocated: 0,
     "In Progress": 0,
@@ -125,7 +125,7 @@ export const getRequestReport = async (startDate, endDate) => {
   };
   const labelByStatus = {
     SUBMITTED: "Submitted",
-    DEPARTMENT_APPROVED: "Department Approved",
+    DEPARTMENT_APPROVED: "Work Unit Approved",
     TRANSPORT_APPROVED: "Transport Approved",
     ALLOCATED: "Allocated",
     IN_PROGRESS: "In Progress",

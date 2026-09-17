@@ -128,8 +128,8 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
     if ((form.role === "department_head" || form.role === "requester") && !form.department_id) {
       newErrors.department_id =
         form.role === "requester"
-          ? "A Requester must be assigned a department"
-          : "An Office Head must be assigned a department";
+          ? "A Requester must be assigned a work unit"
+          : "An Office Head must be assigned a work unit";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -251,7 +251,7 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
             <>
               <TextField
                 select
-                label="Department"
+                label="Work Unit"
                 name="department_id"
                 // While departments are still loading, `form.department_id`
                 // is already a real UUID (from initialData) but no matching
@@ -267,7 +267,7 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
                 fullWidth
               >
                 <MenuItem value="">
-                  <em>{loadingDepartments ? "Loading departments..." : "Select a department"}</em>
+                  <em>{loadingDepartments ? "Loading work units..." : "Select a work unit"}</em>
                 </MenuItem>
                 {departments.map((department) => (
                   <MenuItem key={department.id} value={department.id}>
@@ -277,8 +277,8 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
               </TextField>
               <FormHelperText sx={{ mt: -1.5 }}>
                 {form.role === "requester"
-                  ? "Determines which department this user's transport requests are submitted under, and who approves them."
-                  : "Determines which department's transport requests, drivers, and trips this user can see and approve."}
+                  ? "Determines which work unit this user's transport requests are submitted under, and who approves them."
+                  : "Determines which work unit's transport requests, drivers, and trips this user can see and approve."}
               </FormHelperText>
             </>
           )}

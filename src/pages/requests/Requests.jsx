@@ -112,7 +112,7 @@ const Requests = () => {
 
   const validateRequest = (request) => {
     if (!request.requester?.trim()) return "Requester is required.";
-    if (!request.departmentId) return "Department is required.";
+    if (!request.departmentId) return "Work unit is required.";
     if (!request.passengerCount || Number(request.passengerCount) < 1) return "Enter at least one passenger.";
     if (!request.passengerList?.trim() && !request.passengerManifestFile && !request.passengerManifestPath) {
       return "Add passenger names and contacts, or upload a PDF manifest.";

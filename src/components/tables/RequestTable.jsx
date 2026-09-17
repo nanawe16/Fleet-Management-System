@@ -45,7 +45,8 @@ const statusColor = (status) => {
   }
 };
 
-const statusLabel = (status) => (status || "").replace(/_/g, " ");
+const statusLabel = (status) =>
+  status === "DEPARTMENT_APPROVED" ? "WORK UNIT APPROVED" : (status || "").replace(/_/g, " ");
 
 /**
  * Every handler prop here is optional — Requests.jsx only passes the
@@ -92,7 +93,7 @@ const RequestTable = ({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Department</TableCell>
+            <TableCell>Work Unit</TableCell>
             <TableCell>Requester</TableCell>
             <TableCell>Passengers</TableCell>
             <TableCell>Task</TableCell>

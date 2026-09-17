@@ -62,7 +62,7 @@ const Departments = () => {
     if (isDuplicateName(department.name, editingDepartment?.id)) {
       setSnackbar({
         open: true,
-        message: `A department named "${department.name}" already exists.`,
+        message: `A work unit named "${department.name}" already exists.`,
         severity: "error",
       });
       return;
@@ -77,7 +77,7 @@ const Departments = () => {
         );
         setSnackbar({
           open: true,
-          message: "Department updated successfully!",
+          message: "Work unit updated successfully!",
           severity: "success",
         });
       } else {
@@ -85,7 +85,7 @@ const Departments = () => {
         setDepartments([...departments, created]);
         setSnackbar({
           open: true,
-          message: "Department added successfully!",
+          message: "Work unit added successfully!",
           severity: "success",
         });
       }
@@ -95,7 +95,7 @@ const Departments = () => {
     } catch (err) {
       setSnackbar({
         open: true,
-        message: "Couldn't save the department. Please try again.",
+        message: "Couldn't save the work unit. Please try again.",
         severity: "error",
       });
     } finally {
@@ -121,13 +121,13 @@ const Departments = () => {
       setDepartments(departments.filter((d) => d.id !== departmentToDelete.id));
       setSnackbar({
         open: true,
-        message: "Department deleted successfully!",
+        message: "Work unit deleted successfully!",
         severity: "success",
       });
     } catch (err) {
       setSnackbar({
         open: true,
-        message: "Couldn't delete the department. Please try again.",
+        message: "Couldn't delete the work unit. Please try again.",
         severity: "error",
       });
     } finally {
@@ -151,8 +151,8 @@ const Departments = () => {
   return (
     <DashboardLayout>
       <PageHeader
-        title="Department Management"
-        buttonText="Add Department"
+        title="Work Unit Management"
+        buttonText="Add Work Unit"
         onAdd={isAdmin ? () => setOpen(true) : undefined}
       />
 
@@ -168,7 +168,7 @@ const Departments = () => {
         status={statusFilter}
         setStatus={setStatusFilter}
         statusOptions={["All", "Active", "Inactive"]}
-        searchLabel="Search Departments"
+        searchLabel="Search Work Units"
       />
 
       <DepartmentForm
@@ -200,7 +200,7 @@ const Departments = () => {
 
       <ConfirmDialog
         open={deleteDialogOpen}
-        title="Delete Department"
+        title="Delete Work Unit"
         message={`Are you sure you want to delete ${departmentToDelete?.name || ""}?`}
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={confirmDelete}

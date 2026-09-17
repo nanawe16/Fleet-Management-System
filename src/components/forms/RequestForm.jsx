@@ -89,7 +89,7 @@ const RequestForm = ({ open, handleClose, onSave, initialData, saving = false })
   const validate = () => {
     const newErrors = {};
 
-    if (!request.departmentId) newErrors.departmentId = "Department is required";
+    if (!request.departmentId) newErrors.departmentId = "Work unit is required";
     if (!request.requester.trim()) newErrors.requester = "Requester is required";
     if (!request.passengerCount || Number(request.passengerCount) < 1) {
       newErrors.passengerCount = "Enter at least one passenger";
@@ -138,15 +138,15 @@ const RequestForm = ({ open, handleClose, onSave, initialData, saving = false })
         <Stack spacing={2} mt={1}>
           {departmentsLoaded && departments.length === 0 && (
             <Alert severity="warning">
-              No department is assigned to your account yet, so there's nothing to select here.
-              Ask an administrator to assign you a department in User Management before submitting
+              No work unit is assigned to your account yet, so there's nothing to select here.
+              Ask an administrator to assign you a work unit in User Management before submitting
               a request.
             </Alert>
           )}
 
           <TextField
             select
-            label="Department"
+            label="Work Unit"
             name="departmentId"
             value={request.departmentId || ""}
             onChange={handleChange}

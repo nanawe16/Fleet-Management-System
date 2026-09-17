@@ -25,7 +25,8 @@ export const roles = {
   dashboard: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
   vehicles: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president"],
   drivers: ["admin", "transport_manager", "department_head", "driver", "mechanic", "vice_president"],
-  departments: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president"],
+  // Work Units are configured and maintained solely by Administrators.
+  departments: ["admin"],
   requests: ["admin", "transport_manager", "department_head", "driver", "finance_officer", "vice_president", "requester"],
   trips: ["admin", "transport_manager", "department_head", "driver", "finance_officer", "vice_president"],
   gps: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president"],

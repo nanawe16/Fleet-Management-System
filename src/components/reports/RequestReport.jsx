@@ -7,7 +7,7 @@ import { getRequestReport } from "../../services/reportService";
 // Rejected, which reportService.getRequestReport no longer returns).
 const STATUS_COLORS = {
   Submitted: "#ed6c02",
-  "Department Approved": "#f9a825",
+  "Work Unit Approved": "#f9a825",
   "Transport Approved": "#0288d1",
   Allocated: "#5e35b1",
   "In Progress": "#1976d2",

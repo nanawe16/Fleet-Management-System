@@ -37,7 +37,7 @@ const DepartmentForm = ({ open, handleClose, onSave, initialData, saving = false
 
   const validate = () => {
     const newErrors = {};
-    if (!department.name.trim()) newErrors.name = "Department name is required";
+    if (!department.name.trim()) newErrors.name = "Work unit name is required";
     if (!department.manager.trim()) newErrors.manager = "Manager is required";
     if (!department.phone.trim()) {
       newErrors.phone = "Phone number is required";
@@ -58,12 +58,12 @@ const DepartmentForm = ({ open, handleClose, onSave, initialData, saving = false
 
   return (
     <Dialog open={open} onClose={saving ? undefined : handleClose} fullWidth maxWidth="sm">
-      <DialogTitle>{initialData ? "Edit Department" : "Add Department"}</DialogTitle>
+      <DialogTitle>{initialData ? "Edit Work Unit" : "Add Work Unit"}</DialogTitle>
 
       <DialogContent>
         <Stack spacing={2} mt={1}>
           <TextField
-            label="Department Name"
+            label="Work Unit Name"
             name="name"
             value={department.name}
             onChange={handleChange}

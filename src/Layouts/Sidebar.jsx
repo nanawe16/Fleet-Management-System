@@ -25,7 +25,7 @@ const ALL_MENU_ITEMS = [
   { name: "Dashboard", path: "/dashboard", icon: <Dashboard />, roles: roles.dashboard },
   { name: "Vehicles", path: "/vehicles", icon: <DirectionsCar />, roles: roles.vehicles },
   { name: "Drivers", path: "/drivers", icon: <Person />, roles: roles.drivers },
-  { name: "Departments", path: "/departments", icon: <Business />, roles: roles.departments },
+  { name: "Work Units", path: "/departments", icon: <Business />, roles: roles.departments },
   { name: "Transport Requests", path: "/requests", icon: <Assignment />, roles: roles.requests },
   { name: "Trip Management", path: "/trips", icon: <AltRoute />, roles: roles.trips },
   { name: "Fuel", path: "/fuel", icon: <LocalGasStation />, roles: roles.fuel },
