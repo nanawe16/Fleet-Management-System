@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 const statusColor = (status) => {
   if (status === "Verified") return "success";
@@ -28,9 +29,9 @@ const statusColor = (status) => {
 // onEdit/onDelete are optional — Fuel.jsx omits them for the Driver
 // role (create + view only, matrix "C Own" + view added in 025).
 // onVerify/onReject are optional too — Fuel.jsx only passes them when
-// the logged-in user is a Finance Officer, same convention
+// the logged-in user is a Transport Manager, same convention
 // Requests.jsx uses for onApprove/onReject on RequestTable.
-const FuelTable = ({ records, onEdit, onDelete, onVerify, onReject, processingId }) => {
+const FuelTable = ({ records, onEdit, onDelete, onVerify, onReject, onOpenEvidence, processingId }) => {
   if (records.length === 0) {
     return (
       <Paper sx={{ p: 5, textAlign: "center", borderRadius: 3 }}>
@@ -57,6 +58,7 @@ const FuelTable = ({ records, onEdit, onDelete, onVerify, onReject, processingId
             <TableCell>Fuel Type</TableCell>
             <TableCell align="right">Liters</TableCell>
             <TableCell align="right">Cost</TableCell>
+            <TableCell>Account Number</TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Status</TableCell>
             {showActions && <TableCell align="right">Actions</TableCell>}
@@ -81,6 +83,7 @@ const FuelTable = ({ records, onEdit, onDelete, onVerify, onReject, processingId
                 </TableCell>
                 <TableCell align="right">{record.liters} L</TableCell>
                 <TableCell align="right">ETB {Number(record.cost).toLocaleString()}</TableCell>
+                <TableCell>{record.accountNumber || "—"}</TableCell>
                 <TableCell>{record.date}</TableCell>
                 <TableCell>
                   {record.status && (
@@ -127,6 +130,13 @@ const FuelTable = ({ records, onEdit, onDelete, onVerify, onReject, processingId
                             disabled={isProcessing}
                           >
                             <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                      {record.verificationEvidencePath && onOpenEvidence && (
+                        <Tooltip title="Open verification evidence">
+                          <IconButton size="small" color="primary" onClick={() => onOpenEvidence(record)}>
+                            <AttachFileIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
                       )}

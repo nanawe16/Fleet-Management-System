@@ -21,6 +21,7 @@ const emptyFuel = {
   fuelType: "Diesel",
   liters: "",
   cost: "",
+  accountNumber: "",
   date: "",
 };
 
@@ -79,6 +80,12 @@ const FuelForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
 
     if (!fuel.cost || Number(fuel.cost) <= 0) {
       newErrors.cost = "Cost must be a positive number";
+    }
+
+    if (!fuel.accountNumber?.trim()) {
+      newErrors.accountNumber = "Account number is required";
+    } else if (!/^\d+$/.test(fuel.accountNumber.trim())) {
+      newErrors.accountNumber = "Account number can contain digits only";
     }
 
     if (!fuel.date) {
@@ -172,6 +179,17 @@ const FuelForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
             onChange={handleChange}
             error={!!errors.cost}
             helperText={errors.cost}
+            fullWidth
+          />
+
+          <TextField
+            label="Account Number"
+            name="accountNumber"
+            value={fuel.accountNumber || ""}
+            onChange={handleChange}
+            error={!!errors.accountNumber}
+            helperText={errors.accountNumber || "Enter the account to be charged."}
+            inputProps={{ inputMode: "numeric" }}
             fullWidth
           />
 

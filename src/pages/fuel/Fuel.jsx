@@ -10,6 +10,7 @@ import {
   deleteFuelRecord,
   verifyFuelRecord,
   rejectFuelRecord,
+  getVerificationEvidenceUrl,
 } from "../../services/fuelService";
 import { getCurrentUser } from "../../services/authService";
 
@@ -56,11 +57,13 @@ const Fuel = () => {
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [recordToReject, setRecordToReject] = useState(null);
   const [rejectReason, setRejectReason] = useState("");
+  const [verifyDialogOpen, setVerifyDialogOpen] = useState(false);
+  const [recordToVerify, setRecordToVerify] = useState(null);
+  const [verificationEvidenceFile, setVerificationEvidenceFile] = useState(null);
 
-  // Only Finance can verify/reject (matrix: Fuel "V/A All"). RLS is the
-  // real enforcement (022's trigger blocks anyone else's update anyway);
-  // this just decides whether FuelTable shows the buttons at all.
-  const isFinance = getCurrentUser()?.role === "finance_officer";
+  // Fuel requests are reviewed by Transport Management. The database
+  // policy and trigger enforce this; this UI gate only controls buttons.
+  const isTransportManager = getCurrentUser()?.role === "transport_manager";
 
   // Edit/Delete on Fuel are Admin-only per the matrix (Admin "F";
   // everyone else is at most "V All" or "C Own" — Transport Manager,
@@ -99,6 +102,12 @@ const Fuel = () => {
     }
     if (!record.cost || Number(record.cost) <= 0) {
       return "Cost must be a positive number.";
+    }
+    if (!record.accountNumber?.trim()) {
+      return "Account number is required.";
+    }
+    if (!/^\d+$/.test(record.accountNumber.trim())) {
+      return "Account number can contain digits only.";
     }
     if (!record.date) {
       return "Date is required.";
@@ -183,11 +192,17 @@ const Fuel = () => {
     }
   };
 
-  const handleVerify = async (id) => {
-    setProcessingId(id);
+  const openVerifyDialog = (id) => {
+    setRecordToVerify(records.find((record) => record.id === id));
+    setVerificationEvidenceFile(null);
+    setVerifyDialogOpen(true);
+  };
+
+  const confirmVerify = async () => {
+    setProcessingId(recordToVerify.id);
     try {
-      const updated = await verifyFuelRecord(id);
-      setRecords(records.map((r) => (r.id === id ? updated : r)));
+      const updated = await verifyFuelRecord(recordToVerify.id, verificationEvidenceFile);
+      setRecords(records.map((r) => (r.id === recordToVerify.id ? updated : r)));
       setSnackbar({ open: true, message: "Fuel record verified.", severity: "success" });
     } catch (err) {
       setSnackbar({
@@ -197,6 +212,29 @@ const Fuel = () => {
       });
     } finally {
       setProcessingId(null);
+      setVerifyDialogOpen(false);
+      setRecordToVerify(null);
+      setVerificationEvidenceFile(null);
+    }
+  };
+
+  const handleVerificationEvidenceChange = (event) => {
+    const file = event.target.files?.[0] || null;
+    const isAllowed = file && ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(file.type);
+    if (file && (!isAllowed || file.size > 10 * 1024 * 1024)) {
+      setSnackbar({ open: true, message: "Choose an image or PDF no larger than 10 MB.", severity: "error" });
+      event.target.value = "";
+      return;
+    }
+    setVerificationEvidenceFile(file);
+  };
+
+  const handleOpenEvidence = async (record) => {
+    try {
+      const url = await getVerificationEvidenceUrl(record.verificationEvidencePath);
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      setSnackbar({ open: true, message: err.message || "Couldn't open verification evidence.", severity: "error" });
     }
   };
 
@@ -282,8 +320,9 @@ const Fuel = () => {
           records={filteredRecords}
           onEdit={isAdmin ? handleEdit : undefined}
           onDelete={isAdmin ? handleDelete : undefined}
-          onVerify={isFinance ? handleVerify : undefined}
-          onReject={isFinance ? openRejectDialog : undefined}
+          onVerify={isTransportManager ? openVerifyDialog : undefined}
+          onReject={isTransportManager ? openRejectDialog : undefined}
+          onOpenEvidence={isAdmin || isTransportManager ? handleOpenEvidence : undefined}
           processingId={processingId}
         />
       )}
@@ -323,6 +362,34 @@ const Fuel = () => {
             disabled={processingId === recordToReject?.id}
           >
             Reject
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={verifyDialogOpen} onClose={() => setVerifyDialogOpen(false)} fullWidth maxWidth="sm">
+        <DialogTitle>Verify fuel record for {recordToVerify?.vehicle || ""}?</DialogTitle>
+        <DialogContent>
+          <Stack spacing={1} sx={{ mt: 1 }}>
+            <Button component="label" variant="outlined" sx={{ alignSelf: "flex-start" }}>
+              Attach photo or PDF (optional)
+              <input
+                hidden
+                type="file"
+                accept="image/jpeg,image/png,image/webp,application/pdf,.pdf"
+                onChange={handleVerificationEvidenceChange}
+              />
+            </Button>
+            {verificationEvidenceFile && <Alert severity="info">{verificationEvidenceFile.name}</Alert>}
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setVerifyDialogOpen(false)}>Cancel</Button>
+          <Button
+            variant="contained"
+            onClick={confirmVerify}
+            disabled={processingId === recordToVerify?.id}
+          >
+            Verify
           </Button>
         </DialogActions>
       </Dialog>

@@ -17,10 +17,33 @@ const toAppShape = (row) => ({
   fuelType: row.fuel_type,
   liters: row.liters,
   cost: row.cost,
+  accountNumber: row.account_number || "",
   date: row.record_date,
   status: row.status,
   rejectionReason: row.rejection_reason,
+  verificationEvidencePath: row.verification_evidence_path || "",
+  verificationEvidenceName: row.verification_evidence_name || "",
 });
+
+const VERIFICATION_EVIDENCE_BUCKET = "fuel-verification-evidence";
+const VERIFICATION_EVIDENCE_TYPES = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
+
+const uploadVerificationEvidence = async (file, userId, recordId) => {
+  if (!file) return {};
+  const isAllowed = VERIFICATION_EVIDENCE_TYPES.includes(file.type);
+  if (!isAllowed || file.size > 10 * 1024 * 1024) {
+    throw new Error("Verification evidence must be an image or PDF no larger than 10 MB.");
+  }
+
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const path = `${userId}/${recordId}/${Date.now()}-${safeName}`;
+  const { error } = await supabase.storage.from(VERIFICATION_EVIDENCE_BUCKET).upload(path, file, {
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) throw error;
+  return { verification_evidence_path: path, verification_evidence_name: file.name };
+};
 
 const toDbShape = (record) => ({
   vehicle: record.vehicle,
@@ -30,6 +53,7 @@ const toDbShape = (record) => ({
   fuel_type: record.fuelType,
   liters: record.liters,
   cost: record.cost,
+  account_number: record.accountNumber,
   record_date: record.date,
 });
 
@@ -80,16 +104,19 @@ export const deleteFuelRecord = async (id) => {
 };
 
 /**
- * Finance verifies a pending fuel record. Kept as its own function
+ * Transport Management verifies a pending fuel record. Kept as its own function
  * (rather than routed through updateFuelRecord) since verification is a
  * distinct workflow action with its own permission — mirrors
  * approveRequest/rejectRequest in requestService.js. Not yet wired to
  * any UI; Fuel.jsx doesn't call this yet.
  */
-export const verifyFuelRecord = async (id) => {
+export const verifyFuelRecord = async (id, evidenceFile = null) => {
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError) throw authError;
+  const evidence = await uploadVerificationEvidence(evidenceFile, authData.user?.id, id);
   const { data, error } = await supabase
     .from("fuel_records")
-    .update({ status: "Verified", rejection_reason: null })
+    .update({ status: "Verified", rejection_reason: null, ...evidence })
     .eq("id", id)
     .select()
     .single();
@@ -108,4 +135,12 @@ export const rejectFuelRecord = async (id, reason = "") => {
 
   if (error) throw error;
   return toAppShape(data);
+};
+
+export const getVerificationEvidenceUrl = async (path) => {
+  const { data, error } = await supabase.storage
+    .from(VERIFICATION_EVIDENCE_BUCKET)
+    .createSignedUrl(path, 60 * 5);
+  if (error) throw error;
+  return data.signedUrl;
 };
