@@ -19,7 +19,10 @@ export const getDepartments = async () => {
     return { data: [], usingMockData: true };
   }
 
-  return { data, usingMockData: false };
+  // department.branchId (camelCase) added alongside the raw row so
+  // DepartmentForm's branch dropdown can pre-select the right branch
+  // when editing — everything else stays exactly as before.
+  return { data: data.map((d) => ({ ...d, branchId: d.branch_id })), usingMockData: false };
 };
 
 export const createDepartment = async (department) => {
@@ -30,12 +33,13 @@ export const createDepartment = async (department) => {
       manager: department.manager,
       phone: department.phone,
       status: department.status,
+      branch_id: department.branchId,
     })
     .select()
     .single();
 
   if (error) throw error;
-  return data;
+  return { ...data, branchId: data.branch_id };
 };
 
 export const updateDepartment = async (id, department) => {
@@ -46,13 +50,14 @@ export const updateDepartment = async (id, department) => {
       manager: department.manager,
       phone: department.phone,
       status: department.status,
+      branch_id: department.branchId,
     })
     .eq("id", id)
     .select()
     .single();
 
   if (error) throw error;
-  return data;
+  return { ...data, branchId: data.branch_id };
 };
 
 export const deleteDepartment = async (id) => {
