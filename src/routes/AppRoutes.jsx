@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
+import Branches from "../pages/branches/Branches";
 import Vehicles from "../pages/vehicles/Vehicles";
 import Drivers from "../pages/drivers/Drivers";
 import Departments from "../pages/departments/Departments";
@@ -33,6 +34,7 @@ const AppRoutes = () => {
       <Route path="/reset-password" element={<PasswordRecovery mode="reset" />} />
 
       <Route path="/dashboard" element={protectedPage(<Dashboard />, roles.dashboard)} />
+      <Route path="/branches" element={protectedPage(<Branches />, roles.branches)} />
       <Route path="/vehicles" element={protectedPage(<Vehicles />, roles.vehicles)} />
       <Route path="/drivers" element={protectedPage(<Drivers />, roles.drivers)} />
       <Route path="/departments" element={protectedPage(<Departments />, roles.departments)} />
