@@ -1,16 +1,36 @@
+```css
 :root {
   color-scheme: light;
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Poppins",
+    "Noto Sans Ethiopic",
+    system-ui,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Amharic and Afaan Oromo */
+:lang(am),
+:lang(om) {
+  font-family:
+    "Noto Sans Ethiopic",
+    "Poppins",
+    system-ui,
+    sans-serif;
+}
+
+/* Reset browser box sizing */
 * {
   box-sizing: border-box;
 }
 
+/* Reset page spacing */
 html,
 body {
   margin: 0;
@@ -18,13 +38,9 @@ body {
   height: 100%;
 }
 
+/* React root */
 #root {
   min-height: 100vh;
   width: 100%;
 }
-
-/* MUI provides its own Typography/Button/etc. styling — this file just
-   resets the browser defaults so MUI's theme is the only thing
-   controlling appearance. Avoid adding page-specific styles here;
-   use each component's `sx` prop or a theme override instead, so
-   styling stays colocated with the component that needs it. */
+```

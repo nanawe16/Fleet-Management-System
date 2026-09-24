@@ -5,16 +5,18 @@ const theme = createTheme({
     primary: {
       main: "#1976d2",
     },
+
     secondary: {
       main: "#0F172A",
     },
+
     background: {
       default: "#f5f7fb",
     },
   },
 
   typography: {
-    fontFamily: "'Poppins', sans-serif",
+    fontFamily: "'Poppins', 'Noto Sans Ethiopic', sans-serif",
 
     h4: {
       fontWeight: 700,
