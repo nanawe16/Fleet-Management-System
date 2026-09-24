@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import DashboardLayout from "../../Layouts/DashboardLayout";
 import BranchTable from "../../components/tables/BranchTable";
 import BranchForm from "../../components/forms/BranchForm";
-import { getBranches, createBranch, updateBranch, deleteBranch } from "../../services/branchService";
+import { getBranches, createBranch, updateBranch, deleteBranch } from "../../services/branchservice.JS";
 import { getCurrentUser } from "../../services/authService";
 
 import PageHeader from "../../components/common/PageHeader";
