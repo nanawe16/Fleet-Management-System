@@ -1,6 +1,6 @@
-```css
 :root {
   color-scheme: light;
+
   font-family:
     "Poppins",
     "Noto Sans Ethiopic",
@@ -15,9 +15,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Amharic and Afaan Oromo */
-:lang(am),
-:lang(om) {
+/* Amharic */
+:lang(am) {
   font-family:
     "Noto Sans Ethiopic",
     "Poppins",
@@ -25,12 +24,19 @@
     sans-serif;
 }
 
-/* Reset browser box sizing */
+/* Afaan Oromo */
+:lang(om) {
+  font-family:
+    "Poppins",
+    "Noto Sans Ethiopic",
+    system-ui,
+    sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
 
-/* Reset page spacing */
 html,
 body {
   margin: 0;
@@ -38,9 +44,7 @@ body {
   height: 100%;
 }
 
-/* React root */
 #root {
   min-height: 100vh;
   width: 100%;
 }
-```
