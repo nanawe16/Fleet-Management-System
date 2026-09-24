@@ -6,45 +6,69 @@ import NotificationSettings from "../../components/settings/NotificationSettings
 import { Typography, Tabs, Tab, Box } from "@mui/material";
 import { getCurrentUser } from "../../services/authService";
 import LanguageSwitcher from "../../i18n/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 const Settings = () => {
-  const [tab, setTab] = useState(0);
-  // System settings (org name, contact email) are fleet-wide config —
-  // keep that tab admin-only even though everyone else now has their
-  // own Profile and Notifications tabs here.
-  const isAdmin = getCurrentUser()?.role === "admin";
-  const tabs = [
-    { label: "Profile", content: <ProfileSettings /> },
-    ...(isAdmin ? [{ label: "System", content: <SystemSettings /> }] : []),
-    { label: "Notifications", content: <NotificationSettings /> },
-    {
-      label: "Language",
-      content: (
-        <Box sx={{ maxWidth: 320 }}>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Choose the language used across the app.
-          </Typography>
-          <LanguageSwitcher showLabel={false} />
-        </Box>
-      ),
-    },
-  ];
+  const [tab, setTab] = useState(0);
+  const { t } = useTranslation();
 
-  return (
-    <DashboardLayout>
-      <Typography variant="h4" mb={3}>
-        Settings
-      </Typography>
+  const isAdmin = getCurrentUser()?.role === "admin";
 
-      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
-        <Tabs value={tab} onChange={(_, v) => setTab(v)}>
-          {tabs.map((item) => <Tab key={item.label} label={item.label} />)}
-        </Tabs>
-      </Box>
+  const tabs = [
+    {
+      label: t("settings.profile"),
+      content: <ProfileSettings />,
+    },
 
-      {tabs[tab]?.content}
-    </DashboardLayout>
-  );
+    ...(isAdmin
+      ? [
+          {
+            label: t("settings.system"),
+            content: <SystemSettings />,
+          },
+        ]
+      : []),
+
+    {
+      label: t("settings.notificationsTab"),
+      content: <NotificationSettings />,
+    },
+
+    {
+      label: t("settings.languageTab"),
+      content: (
+        <Box sx={{ maxWidth: 320 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ mb: 2 }}
+          >
+            {t("common.selectLanguage")}
+          </Typography>
+
+          <LanguageSwitcher showLabel={false} />
+        </Box>
+      ),
+    },
+  ];
+
+  return (
+    <DashboardLayout>
+      <Typography variant="h4" mb={3}>
+        {t("settings.title")}
+      </Typography>
+
+      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
+        <Tabs value={tab} onChange={(_, v) => setTab(v)}>
+          {tabs.map((item) => (
+            <Tab key={item.label} label={item.label} />
+          ))}
+        </Tabs>
+      </Box>
+
+      {tabs[tab]?.content}
+    </DashboardLayout>
+  );
 };
 
 export default Settings;
