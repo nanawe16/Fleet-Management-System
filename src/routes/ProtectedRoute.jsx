@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { getCurrentUser } from "../services/authService";
 
 /**
@@ -16,7 +16,9 @@ import { getCurrentUser } from "../services/authService";
  */
 const ProtectedRoute = ({ roles, children }) => {
   const user = getCurrentUser();
+  const location = useLocation();
   const allowed = roles === "all" || roles.includes(user?.role);
+  console.log("ProtectedRoute check:", { path: location.pathname, roles, userRole: user?.role, allowed });
 
   if (!allowed) {
     return <Navigate to={user ? "/dashboard" : "/login"} replace />;

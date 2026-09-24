@@ -14,6 +14,8 @@ import { Skeleton, Stack, Alert } from "@mui/material";
 const STATUS_OPTIONS = ["All", "Active", "Inactive"];
 
 const Branches = () => {
+  console.log("BRANCHES COMPONENT RENDERED");
+
   const [branches, setBranches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");

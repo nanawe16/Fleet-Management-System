@@ -12,6 +12,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { getLinkableDriverProfiles } from "../../services/driverService";
+import { getBranches } from "../../services/branchService";
 
 const emptyDriver = {
   name: "",
@@ -20,6 +21,7 @@ const emptyDriver = {
   phone: "",
   status: "Available",
   profileId: "",
+  branchId: "",
 };
 
 const DriverForm = ({ open, handleClose, onSave, initialData, saving = false }) => {
@@ -27,6 +29,8 @@ const DriverForm = ({ open, handleClose, onSave, initialData, saving = false }) 
   const [errors, setErrors] = useState({});
   const [linkableProfiles, setLinkableProfiles] = useState([]);
   const [loadingProfiles, setLoadingProfiles] = useState(false);
+  const [branches, setBranches] = useState([]);
+  const [loadingBranches, setLoadingBranches] = useState(false);
 
   useEffect(() => {
     setDriver(initialData || emptyDriver);
@@ -50,6 +54,25 @@ const DriverForm = ({ open, handleClose, onSave, initialData, saving = false }) 
     fetchProfiles();
   }, [open, initialData?.profileId]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const loadBranches = async () => {
+      setLoadingBranches(true);
+      const { data } = await getBranches();
+      setBranches(data);
+      setLoadingBranches(false);
+
+      // Only one branch exists so far (Main Campus) — auto-select it
+      // instead of making every admin pick the one option.
+      if (data.length === 1) {
+        setDriver((prev) => (prev.branchId ? prev : { ...prev, branchId: data[0].id }));
+      }
+    };
+
+    loadBranches();
+  }, [open]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDriver((prev) => ({ ...prev, [name]: value }));
@@ -68,6 +91,8 @@ const DriverForm = ({ open, handleClose, onSave, initialData, saving = false }) 
       tempErrors.phone = "Enter a valid 10-digit phone number (e.g. 0911223344)";
     }
 
+    if (!driver.branchId) tempErrors.branchId = "Branch is required";
+
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -83,6 +108,24 @@ const DriverForm = ({ open, handleClose, onSave, initialData, saving = false }) 
 
       <DialogContent>
         <Stack spacing={2} mt={1}>
+          <TextField
+            select
+            label="Branch"
+            name="branchId"
+            value={driver.branchId || ""}
+            onChange={handleChange}
+            error={!!errors.branchId}
+            helperText={errors.branchId}
+            disabled={loadingBranches}
+            fullWidth
+          >
+            {branches.map((branch) => (
+              <MenuItem key={branch.id} value={branch.id}>
+                {branch.name}
+              </MenuItem>
+            ))}
+          </TextField>
+
           <TextField
             label="Driver Name"
             name="name"

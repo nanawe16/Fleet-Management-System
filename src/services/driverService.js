@@ -8,6 +8,7 @@ const toAppShape = (row) => ({
   phone: row.phone,
   status: row.status,
   profileId: row.profile_id,
+  branchId: row.branch_id,
 });
 
 const toDbShape = (driver) => ({
@@ -17,6 +18,7 @@ const toDbShape = (driver) => ({
   phone: driver.phone,
   status: driver.status,
   profile_id: driver.profileId || null,
+  branch_id: driver.branchId,
 });
 
 export const getDrivers = async () => {

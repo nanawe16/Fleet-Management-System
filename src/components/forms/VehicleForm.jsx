@@ -11,6 +11,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { getDrivers } from "../../services/driverService";
+import { getBranches } from "../../services/branchService";
 
 const emptyVehicle = {
   plateNumber: "",
@@ -20,6 +21,7 @@ const emptyVehicle = {
   assignedDriverId: "",
   status: "Available",
   insuranceExpiry: "",
+  branchId: "",
 };
 
 const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false }) => {
@@ -27,6 +29,8 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
   const [errors, setErrors] = useState({});
   const [drivers, setDrivers] = useState([]);
   const [loadingDrivers, setLoadingDrivers] = useState(false);
+  const [branches, setBranches] = useState([]);
+  const [loadingBranches, setLoadingBranches] = useState(false);
 
   useEffect(() => {
     setVehicle(initialData || emptyVehicle);
@@ -43,7 +47,21 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
       setLoadingDrivers(false);
     };
 
+    const loadBranches = async () => {
+      setLoadingBranches(true);
+      const { data } = await getBranches();
+      setBranches(data);
+      setLoadingBranches(false);
+
+      // Only one branch exists so far (Main Campus) — auto-select it
+      // instead of making every admin pick the one option.
+      if (data.length === 1) {
+        setVehicle((prev) => (prev.branchId ? prev : { ...prev, branchId: data[0].id }));
+      }
+    };
+
     loadDrivers();
+    loadBranches();
   }, [open]);
 
   const handleChange = (e) => {
@@ -63,6 +81,7 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
     if (!vehicle.model.trim()) tempErrors.model = "Vehicle Model is required";
     if (!vehicle.type.trim()) tempErrors.type = "Vehicle Type is required";
     if (!vehicle.assignedDriverId) tempErrors.assignedDriverId = "Assigned driver is required";
+    if (!vehicle.branchId) tempErrors.branchId = "Branch is required";
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -78,6 +97,24 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
 
       <DialogContent>
         <Stack spacing={2} mt={1}>
+          <TextField
+            select
+            label="Branch"
+            name="branchId"
+            value={vehicle.branchId || ""}
+            onChange={handleChange}
+            error={!!errors.branchId}
+            helperText={errors.branchId}
+            disabled={loadingBranches}
+            fullWidth
+          >
+            {branches.map((branch) => (
+              <MenuItem key={branch.id} value={branch.id}>
+                {branch.name}
+              </MenuItem>
+            ))}
+          </TextField>
+
           <TextField
             label="Plate Number"
             name="plateNumber"

@@ -15,6 +15,7 @@ import {
   Inventory2,
   CarCrash,
   Group,
+  LocationCity,
 } from "@mui/icons-material";
 import Business from "@mui/icons-material/Business";
 import { signOut, getCurrentUser } from "../services/authService";
@@ -23,6 +24,7 @@ import { getRoleLabel } from "../config/roleLabels";
 
 const ALL_MENU_ITEMS = [
   { name: "Dashboard", path: "/dashboard", icon: <Dashboard />, roles: roles.dashboard },
+  { name: "Branches", path: "/branches", icon: <LocationCity />, roles: roles.branches },
   { name: "Vehicles", path: "/vehicles", icon: <DirectionsCar />, roles: roles.vehicles },
   { name: "Drivers", path: "/drivers", icon: <Person />, roles: roles.drivers },
   { name: "Work Units", path: "/departments", icon: <Business />, roles: roles.departments },
@@ -44,7 +46,7 @@ const ALL_MENU_ITEMS = [
 // the content, opened via the hamburger button in the Navbar.
 const MOBILE_BREAKPOINT = 900;
 
-const Sidebar = ({ mobileOpen = false, onClose = () => {}, isMobile = false }) => {
+const Sidebar = ({ mobileOpen = false, onClose = () => { }, isMobile = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = getCurrentUser();
@@ -99,14 +101,14 @@ const Sidebar = ({ mobileOpen = false, onClose = () => {}, isMobile = false }) =
           boxSizing: "border-box",
           ...(isMobile
             ? {
-                position: "fixed",
-                top: 0,
-                left: 0,
-                zIndex: 1201,
-                transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
-                transition: "transform 0.2s ease",
-                boxShadow: mobileOpen ? "2px 0 12px rgba(0,0,0,0.3)" : "none",
-              }
+              position: "fixed",
+              top: 0,
+              left: 0,
+              zIndex: 1201,
+              transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
+              transition: "transform 0.2s ease",
+              boxShadow: mobileOpen ? "2px 0 12px rgba(0,0,0,0.3)" : "none",
+            }
             : {}),
         }}
       >
@@ -114,17 +116,17 @@ const Sidebar = ({ mobileOpen = false, onClose = () => {}, isMobile = false }) =
           🚗 FMS
         </h2>
 
-      {user && (
-        <div style={{ marginBottom: "24px", opacity: 0.7, fontSize: "13px" }}>
-          {user.name || user.email}
-          {user.role && <div>{getRoleLabel(user.role)}</div>}
-          {["department_head", "requester"].includes(user.role) && user.department_name && (
-            <div>{user.department_name}</div>
-          )}
-        </div>
-      )}
+        {user && (
+          <div style={{ marginBottom: "24px", opacity: 0.7, fontSize: "13px" }}>
+            {user.name || user.email}
+            {user.role && <div>{getRoleLabel(user.role)}</div>}
+            {["department_head", "requester"].includes(user.role) && user.department_name && (
+              <div>{user.department_name}</div>
+            )}
+          </div>
+        )}
 
-      <style>{`
+        <style>{`
         .fms-sidebar-scroll {
           scrollbar-width: thin;
           scrollbar-color: #334155 transparent;
@@ -144,62 +146,62 @@ const Sidebar = ({ mobileOpen = false, onClose = () => {}, isMobile = false }) =
         }
       `}</style>
 
-      <div className="fms-sidebar-scroll" style={{ flex: 1, overflowY: "auto", minHeight: 0 }}>
-        {menu.map((item) => {
-          const isActive = location.pathname.startsWith(item.path);
-          return (
-            <Link
-              key={item.name}
-              to={item.path}
-              onClick={handleLinkClick}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                color: "white",
-                textDecoration: "none",
-                padding: "12px",
-                borderRadius: "8px",
-                marginBottom: "8px",
-                background: isActive ? "#1E293B" : "transparent",
-                borderLeft: isActive ? "3px solid #3B82F6" : "3px solid transparent",
-                transition: "background 0.15s ease",
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) e.currentTarget.style.background = "#1E293B80";
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) e.currentTarget.style.background = "transparent";
-              }}
-            >
-              {item.icon}
-              {item.name}
-            </Link>
-          );
-        })}
-      </div>
+        <div className="fms-sidebar-scroll" style={{ flex: 1, overflowY: "auto", minHeight: 0 }}>
+          {menu.map((item) => {
+            const isActive = location.pathname.startsWith(item.path);
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                onClick={handleLinkClick}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  color: "white",
+                  textDecoration: "none",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  marginBottom: "8px",
+                  background: isActive ? "#1E293B" : "transparent",
+                  borderLeft: isActive ? "3px solid #3B82F6" : "3px solid transparent",
+                  transition: "background 0.15s ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) e.currentTarget.style.background = "#1E293B80";
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) e.currentTarget.style.background = "transparent";
+                }}
+              >
+                {item.icon}
+                {item.name}
+              </Link>
+            );
+          })}
+        </div>
 
-      <button
-        onClick={handleLogout}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          color: "white",
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-          padding: "12px",
-          borderRadius: "8px",
-          fontSize: "15px",
-          textAlign: "left",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "#1E293B80")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-      >
-        <Logout />
-        Logout
-      </button>
+        <button
+          onClick={handleLogout}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            color: "white",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            padding: "12px",
+            borderRadius: "8px",
+            fontSize: "15px",
+            textAlign: "left",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#1E293B80")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+        >
+          <Logout />
+          Logout
+        </button>
       </div>
     </>
   );

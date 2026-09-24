@@ -20,29 +20,40 @@
 // 039_lock_down_profile_roles.sql) so it can't be reintroduced by a
 // direct insert either. Confirmed zero real accounts had this role
 // before removing it.
+//
+// `super_admin` (added in migration 045, for multi-branch support) is
+// included everywhere `admin` appears below — it's meant to have at
+// least admin's access, but across all branches instead of just one.
+// Without this, a super_admin account would pass every database check
+// but get bounced from every page by ProtectedRoute, since routing
+// access is decided by these arrays, not by the database role alone.
 export const roles = {
-  all: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
-  dashboard: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
-  vehicles: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president"],
-  drivers: ["admin", "transport_manager", "department_head", "driver", "mechanic", "vice_president"],
+  all: ["admin", "super_admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
+  dashboard: ["admin", "super_admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
+  vehicles: ["admin", "super_admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president"],
+  drivers: ["admin", "super_admin", "transport_manager", "department_head", "driver", "mechanic", "vice_president"],
   // Work Units are configured and maintained solely by Administrators.
-  departments: ["admin"],
-  requests: ["admin", "transport_manager", "department_head", "driver", "finance_officer", "vice_president", "requester"],
-  trips: ["admin", "transport_manager", "department_head", "driver", "finance_officer", "vice_president"],
-  gps: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president"],
-  fuel: ["admin", "transport_manager", "driver", "finance_officer", "vice_president"],
-  maintenance: ["admin", "transport_manager", "driver", "mechanic", "finance_officer", "vice_president"],
-  inventory: ["admin", "transport_manager", "mechanic", "finance_officer", "vice_president"],
-  accidents: ["admin", "transport_manager", "department_head", "driver", "mechanic", "vice_president"],
-  reports: ["admin", "transport_manager", "department_head", "finance_officer", "vice_president"],
-  notifications: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
-  settings: ["admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
-  users: ["admin"],
+  departments: ["admin", "super_admin"],
+  // Branches are configured solely by Administrators — a branch-scoped
+  // Admin manages their own branch's record here; Super Admin manages
+  // all of them. Matches the RLS policy on the branches table itself.
+  branches: ["admin", "super_admin"],
+  requests: ["admin", "super_admin", "transport_manager", "department_head", "driver", "finance_officer", "vice_president", "requester"],
+  trips: ["admin", "super_admin", "transport_manager", "department_head", "driver", "finance_officer", "vice_president"],
+  gps: ["admin", "super_admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president"],
+  fuel: ["admin", "super_admin", "transport_manager", "driver", "finance_officer", "vice_president"],
+  maintenance: ["admin", "super_admin", "transport_manager", "driver", "mechanic", "finance_officer", "vice_president"],
+  inventory: ["admin", "super_admin", "transport_manager", "mechanic", "finance_officer", "vice_president"],
+  accidents: ["admin", "super_admin", "transport_manager", "department_head", "driver", "mechanic", "vice_president"],
+  reports: ["admin", "super_admin", "transport_manager", "department_head", "finance_officer", "vice_president"],
+  notifications: ["admin", "super_admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
+  settings: ["admin", "super_admin", "transport_manager", "department_head", "driver", "mechanic", "finance_officer", "vice_president", "requester"],
+  users: ["admin", "super_admin"],
 };
 
 // The existing Reports page combines operational and financial content.
 // These section permissions preserve the more granular matrix rules.
 export const reportSections = {
-  operational: ["admin", "transport_manager", "department_head", "finance_officer", "vice_president"],
-  financial: ["admin", "transport_manager", "finance_officer", "vice_president"],
+  operational: ["admin", "super_admin", "transport_manager", "department_head", "finance_officer", "vice_president"],
+  financial: ["admin", "super_admin", "transport_manager", "finance_officer", "vice_president"],
 };

@@ -9,6 +9,7 @@ const toAppShape = (row) => ({
   assignedDriverId: row.assigned_driver_id,
   status: row.status,
   insuranceExpiry: row.insurance_expiry,
+  branchId: row.branch_id,
 });
 
 const toDbShape = (vehicle) => ({
@@ -19,6 +20,7 @@ const toDbShape = (vehicle) => ({
   assigned_driver_id: vehicle.assignedDriverId || null,
   status: vehicle.status,
   insurance_expiry: vehicle.insuranceExpiry || null,
+  branch_id: vehicle.branchId,
 });
 
 export const getVehicles = async () => {
