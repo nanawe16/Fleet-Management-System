@@ -12,7 +12,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { getLinkableDriverProfiles } from "../../services/driverService";
-import { getBranches } from "../../services/branchService.JS";
+import { getBranches } from "../../services/branchService";
 
 const emptyDriver = {
   name: "",

@@ -11,7 +11,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { getDrivers } from "../../services/driverService";
-import { getBranches } from "../../services/branchService.JS";
+import { getBranches } from "../../services/branchService";
 
 const emptyVehicle = {
   plateNumber: "",

@@ -10,7 +10,7 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/material";
-import { getBranches } from "../../services/branchService.JS";
+import { getBranches } from "../../services/branchService";
 
 const emptyDepartment = {
   name: "",
