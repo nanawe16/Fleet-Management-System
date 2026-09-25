@@ -7,7 +7,7 @@ import { supabase } from "../lib/supabase";
 export const getAllUsers = async () => {
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, full_name, phone, role, is_active, department_id, created_at")
+    .select("id, full_name, phone, role, is_active, department_id, branch_id, created_at")
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -22,9 +22,9 @@ export const getAllUsers = async () => {
  * never hold. The function itself re-checks that the caller is an
  * admin server-side, so this isn't relying on the UI to enforce that.
  */
-export const createUser = async ({ email, password, full_name, phone, role, department_id }) => {
+export const createUser = async ({ email, password, full_name, phone, role, department_id, branch_id }) => {
   const { data, error } = await supabase.functions.invoke("admin-create-user", {
-    body: { email, password, full_name, phone, role, department_id },
+    body: { email, password, full_name, phone, role, department_id, branch_id: branch_id || null },
   });
 
   if (error) {
@@ -116,6 +116,10 @@ export const updateUserProfile = async (id, updates) => {
       // eventually driver — see UserForm.jsx), but harmless to write
       // for any role; RLS/scoping for other roles simply ignores it.
       department_id: updates.department_id || null,
+      // Null for super_admin/vice_president (cross-branch by design);
+      // every other role's branch-scoped RLS reads this via
+      // current_user_branch_id() — see 046_branch_scoped_rls.sql.
+      branch_id: updates.branch_id || null,
     })
     .eq("id", id)
     .select()

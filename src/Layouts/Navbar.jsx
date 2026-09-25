@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   AppBar,
   Toolbar,
@@ -41,6 +42,7 @@ const getInitial = (user) => {
 };
 
 const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width:600px)");
   const user = getCurrentUser();
@@ -79,7 +81,7 @@ const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
         {showMenuButton && (
           <IconButton
             onClick={onMenuClick}
-            aria-label="Open menu"
+            aria-label={t("common.openMenu")}
             edge="start"
             sx={{ mr: 1 }}
           >
@@ -116,6 +118,7 @@ const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
                 lineHeight: 1.2,
               }}
             >
+              {/* Org name stays in English regardless of UI language */}
               Oromia State University
             </Typography>
             <Typography
@@ -130,13 +133,13 @@ const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              fleet management system
+              {t("app.systemName")}
             </Typography>
           </Box>
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <IconButton onClick={() => navigate("/notifications")} aria-label="Notifications">
+          <IconButton onClick={() => navigate("/notifications")} aria-label={t("sidebar.notifications")}>
             <Badge badgeContent={notificationCount} color="error">
               <NotificationsIcon />
             </Badge>
@@ -149,7 +152,7 @@ const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
             {!isMobile && (
               <Box sx={{ textAlign: "right", lineHeight: 1.2 }}>
                 <Typography variant="body2" fontWeight={600}>
-                  {user?.name || user?.email || "Guest"}
+                  {user?.name || user?.email || t("common.guest")}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" component="div">
                   {getRoleLabel(user?.role)}
@@ -180,14 +183,14 @@ const Navbar = ({ onMenuClick = () => {}, showMenuButton = false }) => {
               <ListItemIcon>
                 <SettingsIcon fontSize="small" />
               </ListItemIcon>
-              Settings
+              {t("sidebar.settings")}
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutIcon fontSize="small" />
               </ListItemIcon>
-              Logout
+              {t("sidebar.logout")}
             </MenuItem>
           </Menu>
         </Box>

@@ -1,6 +1,5 @@
 {
   "app": {
-    "universityName": "ኦሮሚያ ክልል ዩኒቨርሲቲ",
     "systemName": "የተሽከርካሪ አስተዳደር ስርዓት"
   },
   "common": {
@@ -20,7 +19,16 @@
     "loading": "በመጫን ላይ...",
     "noDataFound": "ምንም መረጃ አልተገኘም።",
     "language": "ቋንቋ",
-    "selectLanguage": "ቋንቋ ይምረጡ"
+    "selectLanguage": "ቋንቋ ይምረጡ",
+    "guest": "እንግዳ",
+    "openMenu": "ምናሌ ክፈት",
+    "reset": "ዳግም አስጀምር",
+    "clearSearch": "ፍለጋ አጽዳ",
+    "deleting": "በመሰረዝ ላይ...",
+    "saving": "በማስቀመጥ ላይ...",
+    "notSet": "አልተቀናበረም",
+    "adjustSearchOrFilter": "ፍለጋዎን ወይም ማጣሪያዎን ያስተካክሉ።",
+    "backendNotConnected": "ስርዓቱ ገና አልተገናኘም — የናሙና መረጃ በማሳየት ላይ።"
   },
   "languages": {
     "en": "እንግሊዝኛ",
@@ -29,6 +37,7 @@
   },
   "sidebar": {
     "dashboard": "ዳሽቦርድ",
+    "branches": "ቅርንጫፎች",
     "vehicles": "ተሽከርካሪዎች",
     "drivers": "ሾፌሮች",
     "departments": "ክፍሎች",
@@ -57,6 +66,63 @@
     "fuelConsumption": "የነዳጅ ፍጆታ — ያለፉት 6 ወራት (ሊትር)",
     "recentActivity": "የቅርብ ጊዜ እንቅስቃሴ",
     "noVehiclesYet": "እስካሁን ተሽከርካሪ የለም።"
+  },
+  "errors": {
+    "pageCrashed": "ይህን ገጽ በመጫን ላይ ችግር ተፈጥሯል።",
+    "pageCrashedDetail": "እንደገና ለመጫን ይሞክሩ። ችግሩ ከቀጠለ፣ የዚህ ገጽ ስርዓት ገና ላይገናኝ ይችላል።",
+    "reload": "እንደገና ጫን"
+  },
+  "vehicles": {
+    "title": "የተሽከርካሪ አስተዳደር",
+    "myVehicleTitle": "የኔ ተሽከርካሪ",
+    "addButton": "ተሽከርካሪ ጨምር",
+    "searchLabel": "ተሽከርካሪዎችን ፈልግ",
+    "status": {
+      "available": "ዝግጁ",
+      "onTrip": "በጉዞ ላይ",
+      "maintenance": "ጥገና ላይ"
+    },
+    "table": {
+      "plateNumber": "የሰሌዳ ቁጥር",
+      "model": "ሞዴል",
+      "type": "አይነት",
+      "driver": "ሾፌር",
+      "insuranceExpiry": "የመድን ማብቂያ",
+      "expired": "{{date}} አልፏል",
+      "expires": "{{date}} ያበቃል",
+      "noneFound": "ምንም ተሽከርካሪ አልተገኘም።"
+    },
+    "form": {
+      "editTitle": "ተሽከርካሪ አርትዕ",
+      "addTitle": "አዲስ ተሽከርካሪ ጨምር",
+      "branch": "ቅርንጫፍ",
+      "plateNumber": "የሰሌዳ ቁጥር",
+      "model": "የተሽከርካሪ ሞዴል",
+      "type": "የተሽከርካሪ አይነት",
+      "assignedDriver": "የተመደበ ሾፌር",
+      "insuranceExpiry": "የመድን ማብቂያ",
+      "insuranceExpiryHelper": "የማብቂያ ማንቂያዎችን ለመፍጠር ጥቅም ላይ ይውላል — አማራጭ ግን የሚመከር",
+      "status": "ሁኔታ",
+      "errors": {
+        "plateNumber": "የሰሌዳ ቁጥር ያስፈልጋል",
+        "model": "የተሽከርካሪ ሞዴል ያስፈልጋል",
+        "type": "የተሽከርካሪ አይነት ያስፈልጋል",
+        "driver": "የተመደበ ሾፌር ያስፈልጋል",
+        "branch": "ቅርንጫፍ ያስፈልጋል"
+      }
+    },
+    "notices": {
+      "duplicatePlate": "የሰሌዳ ቁጥር \"{{plate}}\" ቀድሞውኑ ለሌላ ተሽከርካሪ ተመዝግቧል።",
+      "updated": "ተሽከርካሪ በተሳካ ሁኔታ ተዘምኗል!",
+      "added": "ተሽከርካሪ በተሳካ ሁኔታ ታክሏል!",
+      "saveError": "ተሽከርካሪውን ማስቀመጥ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+      "deleted": "ተሽከርካሪ በተሳካ ሁኔታ ተሰርዟል!",
+      "deleteError": "ተሽከርካሪውን መሰረዝ አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
+    },
+    "deleteDialog": {
+      "title": "ተሽከርካሪ ሰርዝ",
+      "message": "{{model}} ({{plate}})ን መሰረዝ እርግጠኛ ነዎት?"
+    }
   },
   "settings": {
     "title": "ቅንብሮች",

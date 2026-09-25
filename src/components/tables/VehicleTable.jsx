@@ -15,6 +15,15 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import { useTranslation } from "react-i18next";
+
+// Vehicle status is stored/compared in English (matches the data model);
+// this maps each stored value to its translation key for display only.
+const STATUS_KEYS = {
+  Available: "available",
+  "On Trip": "onTrip",
+  Maintenance: "maintenance",
+};
 
 const daysUntil = (dateStr) => {
   if (!dateStr) return null;
@@ -23,29 +32,33 @@ const daysUntil = (dateStr) => {
 };
 
 const ExpiryChip = ({ date }) => {
+  const { t } = useTranslation();
+
   if (!date) {
     return (
       <Typography variant="caption" color="text.disabled">
-        Not set
+        {t("common.notSet")}
       </Typography>
     );
   }
 
   const days = daysUntil(date);
-  if (days < 0) return <Chip label={`Expired ${date}`} color="error" size="small" />;
-  if (days <= 14) return <Chip label={`Expires ${date}`} color="warning" size="small" />;
+  if (days < 0) return <Chip label={t("vehicles.table.expired", { date })} color="error" size="small" />;
+  if (days <= 14) return <Chip label={t("vehicles.table.expires", { date })} color="warning" size="small" />;
   return <Chip label={date} size="small" variant="outlined" />;
 };
 
 const VehicleTable = ({ vehicles, onEdit, onDelete }) => {
+  const { t } = useTranslation();
+
   if (vehicles.length === 0) {
     return (
       <Paper sx={{ p: 5, textAlign: "center", borderRadius: 3 }}>
         <DirectionsCarIcon sx={{ fontSize: 40, color: "text.disabled", mb: 1 }} />
         <Typography variant="body1" color="text.secondary">
-          No vehicles found.
+          {t("vehicles.table.noneFound")}
         </Typography>
-        <Typography variant="body2" color="text.disabled">Try adjusting your search or filter.</Typography>
+        <Typography variant="body2" color="text.disabled">{t("common.adjustSearchOrFilter")}</Typography>
       </Paper>
     );
   }
@@ -55,13 +68,13 @@ const VehicleTable = ({ vehicles, onEdit, onDelete }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Plate Number</TableCell>
-            <TableCell>Model</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell>Driver</TableCell>
-            <TableCell>Insurance Expiry</TableCell>
-            <TableCell>Status</TableCell>
-            {(onEdit || onDelete) && <TableCell align="right">Actions</TableCell>}
+            <TableCell>{t("vehicles.table.plateNumber")}</TableCell>
+            <TableCell>{t("vehicles.table.model")}</TableCell>
+            <TableCell>{t("vehicles.table.type")}</TableCell>
+            <TableCell>{t("vehicles.table.driver")}</TableCell>
+            <TableCell>{t("vehicles.table.insuranceExpiry")}</TableCell>
+            <TableCell>{t("common.status")}</TableCell>
+            {(onEdit || onDelete) && <TableCell align="right">{t("common.actions")}</TableCell>}
           </TableRow>
         </TableHead>
 
@@ -85,7 +98,7 @@ const VehicleTable = ({ vehicles, onEdit, onDelete }) => {
               </TableCell>
               <TableCell>
                 <Chip
-                  label={vehicle.status}
+                  label={t(`vehicles.status.${STATUS_KEYS[vehicle.status] || vehicle.status}`)}
                   color={
                     vehicle.status === "Available" ? "success" : vehicle.status === "On Trip" ? "warning" : "error"
                   }
@@ -95,8 +108,8 @@ const VehicleTable = ({ vehicles, onEdit, onDelete }) => {
               {(onEdit || onDelete) && (
                 <TableCell align="right">
                   <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 0.5 }}>
-                    {onEdit && <Tooltip title="Edit"><IconButton size="small" onClick={() => onEdit(vehicle)}><EditIcon fontSize="small" /></IconButton></Tooltip>}
-                    {onDelete && <Tooltip title="Delete"><IconButton size="small" color="error" onClick={() => onDelete(vehicle.id)}><DeleteIcon fontSize="small" /></IconButton></Tooltip>}
+                    {onEdit && <Tooltip title={t("common.edit")}><IconButton size="small" onClick={() => onEdit(vehicle)}><EditIcon fontSize="small" /></IconButton></Tooltip>}
+                    {onDelete && <Tooltip title={t("common.delete")}><IconButton size="small" color="error" onClick={() => onDelete(vehicle.id)}><DeleteIcon fontSize="small" /></IconButton></Tooltip>}
                   </Box>
                 </TableCell>
               )}

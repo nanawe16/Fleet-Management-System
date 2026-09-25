@@ -1,6 +1,5 @@
 {
   "app": {
-    "universityName": "Oromia State University",
     "systemName": "fleet management system"
   },
   "common": {
@@ -20,7 +19,16 @@
     "loading": "Loading...",
     "noDataFound": "No data found.",
     "language": "Language",
-    "selectLanguage": "Select Language"
+    "selectLanguage": "Select Language",
+    "guest": "Guest",
+    "openMenu": "Open menu",
+    "reset": "Reset",
+    "clearSearch": "Clear search",
+    "deleting": "Deleting...",
+    "saving": "Saving...",
+    "notSet": "Not set",
+    "adjustSearchOrFilter": "Try adjusting your search or filter.",
+    "backendNotConnected": "Backend not connected yet — showing sample data."
   },
   "languages": {
     "en": "English",
@@ -29,6 +37,7 @@
   },
   "sidebar": {
     "dashboard": "Dashboard",
+    "branches": "Branches",
     "vehicles": "Vehicles",
     "drivers": "Drivers",
     "departments": "Work Units",
@@ -57,6 +66,63 @@
     "fuelConsumption": "Fuel Consumption — Last 6 Months (liters)",
     "recentActivity": "Recent Activity",
     "noVehiclesYet": "No vehicles yet."
+  },
+  "errors": {
+    "pageCrashed": "Something went wrong loading this page.",
+    "pageCrashedDetail": "Try reloading. If the problem continues, the backend for this page may not be connected yet.",
+    "reload": "Reload"
+  },
+  "vehicles": {
+    "title": "Vehicle Management",
+    "myVehicleTitle": "My Vehicle",
+    "addButton": "Add Vehicle",
+    "searchLabel": "Search Vehicles",
+    "status": {
+      "available": "Available",
+      "onTrip": "On Trip",
+      "maintenance": "Maintenance"
+    },
+    "table": {
+      "plateNumber": "Plate Number",
+      "model": "Model",
+      "type": "Type",
+      "driver": "Driver",
+      "insuranceExpiry": "Insurance Expiry",
+      "expired": "Expired {{date}}",
+      "expires": "Expires {{date}}",
+      "noneFound": "No vehicles found."
+    },
+    "form": {
+      "editTitle": "Edit Vehicle",
+      "addTitle": "Add New Vehicle",
+      "branch": "Branch",
+      "plateNumber": "Plate Number",
+      "model": "Vehicle Model",
+      "type": "Vehicle Type",
+      "assignedDriver": "Assigned Driver",
+      "insuranceExpiry": "Insurance Expiry",
+      "insuranceExpiryHelper": "Used to generate expiry alerts — optional but recommended",
+      "status": "Status",
+      "errors": {
+        "plateNumber": "Plate Number is required",
+        "model": "Vehicle Model is required",
+        "type": "Vehicle Type is required",
+        "driver": "Assigned driver is required",
+        "branch": "Branch is required"
+      }
+    },
+    "notices": {
+      "duplicatePlate": "Plate number \"{{plate}}\" is already registered to another vehicle.",
+      "updated": "Vehicle updated successfully!",
+      "added": "Vehicle added successfully!",
+      "saveError": "Couldn't save the vehicle. Please try again.",
+      "deleted": "Vehicle deleted successfully!",
+      "deleteError": "Couldn't delete the vehicle. Please try again."
+    },
+    "deleteDialog": {
+      "title": "Delete Vehicle",
+      "message": "Are you sure you want to delete {{model}} ({{plate}})?"
+    }
   },
   "settings": {
     "title": "Settings",

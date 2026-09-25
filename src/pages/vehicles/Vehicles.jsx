@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import DashboardLayout from "../../Layouts/DashboardLayout";
 import VehicleTable from "../../components/tables/VehicleTable";
@@ -17,12 +18,13 @@ import { Skeleton, Stack, Alert } from "@mui/material";
 import { getCurrentUser } from "../../services/authService";
 
 const Vehicles = () => {
+  const { t } = useTranslation();
   const role = getCurrentUser()?.role;
   const canManageVehicles = role === "admin" || role === "transport_manager";
   const canDeleteVehicles = role === "admin";
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [notice, setNotice] = useState("");
+  const [usingMockData, setUsingMockData] = useState(false);
 
   const [open, setOpen] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState(null);
@@ -45,7 +47,7 @@ const Vehicles = () => {
     setLoading(true);
     const { data, usingMockData } = await getVehicles();
     setVehicles(data);
-    setNotice(usingMockData ? "Backend not connected yet — showing sample data." : "");
+    setUsingMockData(usingMockData);
     setLoading(false);
   };
 
@@ -69,7 +71,7 @@ const Vehicles = () => {
     if (isDuplicatePlate(vehicle.plateNumber, editingVehicle?.id)) {
       setSnackbar({
         open: true,
-        message: `Plate number "${vehicle.plateNumber}" is already registered to another vehicle.`,
+        message: t("vehicles.notices.duplicatePlate", { plate: vehicle.plateNumber }),
         severity: "error",
       });
       return;
@@ -82,7 +84,7 @@ const Vehicles = () => {
         setVehicles(vehicles.map((v) => (v.id === editingVehicle.id ? updated : v)));
         setSnackbar({
           open: true,
-          message: "Vehicle updated successfully!",
+          message: t("vehicles.notices.updated"),
           severity: "success",
         });
       } else {
@@ -90,7 +92,7 @@ const Vehicles = () => {
         setVehicles([...vehicles, created]);
         setSnackbar({
           open: true,
-          message: "Vehicle added successfully!",
+          message: t("vehicles.notices.added"),
           severity: "success",
         });
       }
@@ -100,7 +102,7 @@ const Vehicles = () => {
     } catch (err) {
       setSnackbar({
         open: true,
-        message: "Couldn't save the vehicle. Please try again.",
+        message: t("vehicles.notices.saveError"),
         severity: "error",
       });
     } finally {
@@ -121,13 +123,13 @@ const Vehicles = () => {
       setVehicles(vehicles.filter((v) => v.id !== vehicleToDelete.id));
       setSnackbar({
         open: true,
-        message: "Vehicle deleted successfully!",
+        message: t("vehicles.notices.deleted"),
         severity: "success",
       });
     } catch (err) {
       setSnackbar({
         open: true,
-        message: "Couldn't delete the vehicle. Please try again.",
+        message: t("vehicles.notices.deleteError"),
         severity: "error",
       });
     } finally {
@@ -152,14 +154,14 @@ const Vehicles = () => {
   return (
     <DashboardLayout>
       <PageHeader
-        title={role === "driver" ? "My Vehicle" : "Vehicle Management"}
-        buttonText="Add Vehicle"
+        title={role === "driver" ? t("vehicles.myVehicleTitle") : t("vehicles.title")}
+        buttonText={t("vehicles.addButton")}
         onAdd={canManageVehicles ? () => setOpen(true) : undefined}
       />
 
-      {notice && (
+      {usingMockData && (
         <Alert severity="info" sx={{ mb: 2 }}>
-          {notice}
+          {t("common.backendNotConnected")}
         </Alert>
       )}
 
@@ -168,8 +170,13 @@ const Vehicles = () => {
         setSearch={setSearch}
         status={statusFilter}
         setStatus={setStatusFilter}
-        statusOptions={["All", "Available", "On Trip", "Maintenance"]}
-        searchLabel="Search Vehicles"
+        statusOptions={[
+          { value: "All", label: t("common.all") },
+          { value: "Available", label: t("vehicles.status.available") },
+          { value: "On Trip", label: t("vehicles.status.onTrip") },
+          { value: "Maintenance", label: t("vehicles.status.maintenance") },
+        ]}
+        searchLabel={t("vehicles.searchLabel")}
       />
 
       <VehicleForm
@@ -201,8 +208,11 @@ const Vehicles = () => {
 
       <ConfirmDialog
         open={deleteDialogOpen}
-        title="Delete Vehicle"
-        message={`Are you sure you want to delete ${vehicleToDelete?.model || ""} (${vehicleToDelete?.plateNumber || ""})?`}
+        title={t("vehicles.deleteDialog.title")}
+        message={t("vehicles.deleteDialog.message", {
+          model: vehicleToDelete?.model || "",
+          plate: vehicleToDelete?.plateNumber || "",
+        })}
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
         loading={deleting}

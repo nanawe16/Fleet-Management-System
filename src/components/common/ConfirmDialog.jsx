@@ -7,8 +7,11 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const ConfirmDialog = ({ open, title, message, onClose, onConfirm, loading = false }) => {
+  const { t } = useTranslation();
+
   return (
     <Dialog open={open} onClose={loading ? undefined : onClose}>
       <DialogTitle>{title}</DialogTitle>
@@ -19,7 +22,7 @@ const ConfirmDialog = ({ open, title, message, onClose, onConfirm, loading = fal
 
       <DialogActions>
         <Button onClick={onClose} disabled={loading}>
-          Cancel
+          {t("common.cancel")}
         </Button>
 
         <Button
@@ -29,7 +32,7 @@ const ConfirmDialog = ({ open, title, message, onClose, onConfirm, loading = fal
           disabled={loading}
           startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
         >
-          {loading ? "Deleting..." : "Delete"}
+          {loading ? t("common.deleting") : t("common.delete")}
         </Button>
       </DialogActions>
     </Dialog>

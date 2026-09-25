@@ -20,6 +20,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { getDepartments } from "../../services/departmentService";
+import { getBranches } from "../../services/branchService";
 import { getRoleLabel } from "../../config/roleLabels";
 
 // Cheap, dependency-free random password — not for anything beyond a
@@ -34,6 +35,7 @@ const generateTempPassword = () => {
 
 const ROLE_OPTIONS = [
   "admin",
+  "super_admin",
   "transport_manager",
   "department_head",
   "driver",
@@ -57,11 +59,20 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
     role: "transport_manager",
     is_active: true,
     department_id: "",
+    branch_id: "",
   });
   const [errors, setErrors] = useState({});
   const [departments, setDepartments] = useState([]);
   const [loadingDepartments, setLoadingDepartments] = useState(false);
+  const [branches, setBranches] = useState([]);
+  const [loadingBranches, setLoadingBranches] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // super_admin and vice_president are cross-branch roles by design —
+  // they aren't tied to one branch, so the field is hidden (and not
+  // required) for them, same way department_id only shows for
+  // department_head/requester below.
+  const isCrossBranchRole = form.role === "super_admin" || form.role === "vice_president";
 
   useEffect(() => {
     if (initialData) {
@@ -74,6 +85,7 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
         role: initialData.role || "transport_manager",
         is_active: initialData.is_active ?? true,
         department_id: initialData.department_id || "",
+        branch_id: initialData.branch_id || "",
       });
     } else {
       // New user — blank slate every time the dialog reopens, rather
@@ -90,6 +102,7 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
         role: "transport_manager",
         is_active: true,
         department_id: "",
+        branch_id: "",
       });
     }
     setErrors({});
@@ -105,7 +118,21 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
       setLoadingDepartments(false);
     };
 
+    const loadBranches = async () => {
+      setLoadingBranches(true);
+      const { data } = await getBranches();
+      setBranches(data);
+      setLoadingBranches(false);
+
+      // Only one branch exists so far (Main Campus) — auto-select it
+      // instead of making every admin pick the one option.
+      if (data.length === 1) {
+        setForm((prev) => (prev.branch_id ? prev : { ...prev, branch_id: data[0].id }));
+      }
+    };
+
     loadDepartments();
+    loadBranches();
   }, [open]);
 
   const handleChange = (e) => {
@@ -130,6 +157,9 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
         form.role === "requester"
           ? "A Requester must be assigned a work unit"
           : "An Office Head must be assigned a work unit";
+    }
+    if (!isCrossBranchRole && !form.branch_id) {
+      newErrors.branch_id = "Branch is required for this role";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -241,6 +271,33 @@ const UserForm = ({ open, handleClose, onSave, initialData, saving = false }) =>
               </MenuItem>
             ))}
           </TextField>
+
+          {/* super_admin and vice_president are cross-branch by design
+              (see the RLS policies added in 046_branch_scoped_rls.sql) —
+              hidden here the same way department_id is hidden for roles
+              it doesn't apply to. */}
+          {!isCrossBranchRole && (
+            <TextField
+              select
+              label="Branch"
+              name="branch_id"
+              value={loadingBranches ? "" : form.branch_id || ""}
+              onChange={handleChange}
+              error={!!errors.branch_id}
+              helperText={errors.branch_id}
+              disabled={loadingBranches}
+              fullWidth
+            >
+              <MenuItem value="">
+                <em>{loadingBranches ? "Loading branches..." : "Select a branch"}</em>
+              </MenuItem>
+              {branches.map((branch) => (
+                <MenuItem key={branch.id} value={branch.id}>
+                  {branch.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
 
           {/* Only Office Head and Requester's access is actually
               scoped by department today (Row-Level Security checks

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogTitle,
@@ -25,6 +26,7 @@ const emptyVehicle = {
 };
 
 const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false }) => {
+  const { t } = useTranslation();
   const [vehicle, setVehicle] = useState(emptyVehicle);
   const [errors, setErrors] = useState({});
   const [drivers, setDrivers] = useState([]);
@@ -77,11 +79,11 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
 
   const validate = () => {
     const tempErrors = {};
-    if (!vehicle.plateNumber.trim()) tempErrors.plateNumber = "Plate Number is required";
-    if (!vehicle.model.trim()) tempErrors.model = "Vehicle Model is required";
-    if (!vehicle.type.trim()) tempErrors.type = "Vehicle Type is required";
-    if (!vehicle.assignedDriverId) tempErrors.assignedDriverId = "Assigned driver is required";
-    if (!vehicle.branchId) tempErrors.branchId = "Branch is required";
+    if (!vehicle.plateNumber.trim()) tempErrors.plateNumber = t("vehicles.form.errors.plateNumber");
+    if (!vehicle.model.trim()) tempErrors.model = t("vehicles.form.errors.model");
+    if (!vehicle.type.trim()) tempErrors.type = t("vehicles.form.errors.type");
+    if (!vehicle.assignedDriverId) tempErrors.assignedDriverId = t("vehicles.form.errors.driver");
+    if (!vehicle.branchId) tempErrors.branchId = t("vehicles.form.errors.branch");
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -93,13 +95,13 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
 
   return (
     <Dialog open={open} onClose={saving ? undefined : handleClose} fullWidth maxWidth="sm">
-      <DialogTitle>{initialData ? "Edit Vehicle" : "Add New Vehicle"}</DialogTitle>
+      <DialogTitle>{initialData ? t("vehicles.form.editTitle") : t("vehicles.form.addTitle")}</DialogTitle>
 
       <DialogContent>
         <Stack spacing={2} mt={1}>
           <TextField
             select
-            label="Branch"
+            label={t("vehicles.form.branch")}
             name="branchId"
             value={vehicle.branchId || ""}
             onChange={handleChange}
@@ -116,7 +118,7 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
           </TextField>
 
           <TextField
-            label="Plate Number"
+            label={t("vehicles.form.plateNumber")}
             name="plateNumber"
             value={vehicle.plateNumber}
             onChange={handleChange}
@@ -126,7 +128,7 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
           />
 
           <TextField
-            label="Vehicle Model"
+            label={t("vehicles.form.model")}
             name="model"
             value={vehicle.model}
             onChange={handleChange}
@@ -136,7 +138,7 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
           />
 
           <TextField
-            label="Vehicle Type"
+            label={t("vehicles.form.type")}
             name="type"
             value={vehicle.type}
             onChange={handleChange}
@@ -147,7 +149,7 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
 
           <TextField
             select
-            label="Assigned Driver"
+            label={t("vehicles.form.assignedDriver")}
             name="assignedDriverId"
             value={vehicle.assignedDriverId || ""}
             onChange={handleChange}
@@ -165,26 +167,26 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
 
           <TextField
             type="date"
-            label="Insurance Expiry"
+            label={t("vehicles.form.insuranceExpiry")}
             name="insuranceExpiry"
             value={vehicle.insuranceExpiry || ""}
             onChange={handleChange}
             InputLabelProps={{ shrink: true }}
-            helperText="Used to generate expiry alerts — optional but recommended"
+            helperText={t("vehicles.form.insuranceExpiryHelper")}
             fullWidth
           />
 
-          <TextField label="Status" name="status" value={vehicle.status} onChange={handleChange} select fullWidth>
-            <MenuItem value="Available">Available</MenuItem>
-            <MenuItem value="On Trip">On Trip</MenuItem>
-            <MenuItem value="Maintenance">Maintenance</MenuItem>
+          <TextField label={t("vehicles.form.status")} name="status" value={vehicle.status} onChange={handleChange} select fullWidth>
+            <MenuItem value="Available">{t("vehicles.status.available")}</MenuItem>
+            <MenuItem value="On Trip">{t("vehicles.status.onTrip")}</MenuItem>
+            <MenuItem value="Maintenance">{t("vehicles.status.maintenance")}</MenuItem>
           </TextField>
         </Stack>
       </DialogContent>
 
       <DialogActions>
         <Button onClick={handleClose} disabled={saving}>
-          Cancel
+          {t("common.cancel")}
         </Button>
         <Button
           variant="contained"
@@ -192,7 +194,7 @@ const VehicleForm = ({ open, handleClose, onSave, initialData, saving = false })
           disabled={saving}
           startIcon={saving ? <CircularProgress size={16} color="inherit" /> : null}
         >
-          {saving ? "Saving..." : "Save"}
+          {saving ? t("common.saving") : t("common.save")}
         </Button>
       </DialogActions>
     </Dialog>

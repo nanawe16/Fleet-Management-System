@@ -1,6 +1,5 @@
 {
   "app": {
-    "universityName": "Yunivarsiitii Mootummaa Oromiyaa",
     "systemName": "sirna bulchiinsa konkolaataa"
   },
   "common": {
@@ -20,7 +19,16 @@
     "loading": "Fe'aa jira...",
     "noDataFound": "Odeeffannoon hin argamne.",
     "language": "Afaan",
-    "selectLanguage": "Afaan Filadhu"
+    "selectLanguage": "Afaan Filadhu",
+    "guest": "Keessummaa",
+    "openMenu": "Baafata Baani",
+    "reset": "Haaromsi",
+    "clearSearch": "Barbaacha Haqi",
+    "deleting": "Haquu jira...",
+    "saving": "Ol kaa'uu jira...",
+    "notSet": "Hin qindeeffamne",
+    "adjustSearchOrFilter": "Barbaacha ykn calaltuu kee sirreessi.",
+    "backendNotConnected": "Sirni duubaa hin walqunnamne — daataa fakkeenyaa argisiisaa jira."
   },
   "languages": {
     "en": "Ingiliffa",
@@ -29,6 +37,7 @@
   },
   "sidebar": {
     "dashboard": "Daashboordii",
+    "branches": "Dameewwan",
     "vehicles": "Konkolaattota",
     "drivers": "Konkolaachiftoota",
     "departments": "Damee",
@@ -57,6 +66,63 @@
     "fuelConsumption": "Fayyadama Boba'aa — Ji'oota 6 Dabran (Liitira)",
     "recentActivity": "Sochii Dhiyeenya",
     "noVehiclesYet": "Ammatti konkolaataan hin jiru."
+  },
+  "errors": {
+    "pageCrashed": "Fuula kana fe'uu keessatti rakkoon uumameera.",
+    "pageCrashedDetail": "Irra deebi'ii fe'uu yaali. Rakkoon yoo itti fufe, sirni duubaa fuula kanaa amma illee hin walqunnamin ta'uu danda'a.",
+    "reload": "Irra Deebi'ii Fe'i"
+  },
+  "vehicles": {
+    "title": "Bulchiinsa Konkolaataa",
+    "myVehicleTitle": "Konkolaataa Koo",
+    "addButton": "Konkolaataa Ida'i",
+    "searchLabel": "Konkolaattota Barbaadi",
+    "status": {
+      "available": "Qophaa'aa",
+      "onTrip": "Imala Irra",
+      "maintenance": "Suphaa Irra"
+    },
+    "table": {
+      "plateNumber": "Lakkoofsa Gabatee",
+      "model": "Moodeelii",
+      "type": "Gosa",
+      "driver": "Konkolaachisaa",
+      "insuranceExpiry": "Xumura Inshuraansii",
+      "expired": "{{date}} darbeera",
+      "expires": "{{date}} xumurama",
+      "noneFound": "Konkolaataan hin argamne."
+    },
+    "form": {
+      "editTitle": "Konkolaataa Gulaali",
+      "addTitle": "Konkolaataa Haaraa Ida'i",
+      "branch": "Damee",
+      "plateNumber": "Lakkoofsa Gabatee",
+      "model": "Moodeelii Konkolaataa",
+      "type": "Gosa Konkolaataa",
+      "assignedDriver": "Konkolaachisaa Ramadame",
+      "insuranceExpiry": "Xumura Inshuraansii",
+      "insuranceExpiryHelper": "Akeekkachiisa xumuraa uumuuf itti fayyadama — filannoo garuu ni gorfama",
+      "status": "Haala",
+      "errors": {
+        "plateNumber": "Lakkoofsi Gabatee barbaachisaadha",
+        "model": "Moodeelii Konkolaataa barbaachisaadha",
+        "type": "Gosti Konkolaataa barbaachisaadha",
+        "driver": "Konkolaachisaa ramadamu barbaachisaadha",
+        "branch": "Dameen barbaachisaadha"
+      }
+    },
+    "notices": {
+      "duplicatePlate": "Lakkoofsi gabatee \"{{plate}}\" duraan konkolaataa biraatiif galmaa'eera.",
+      "updated": "Konkolaataan milkaa'inaan haaromfameera!",
+      "added": "Konkolaataan milkaa'inaan ida'ameera!",
+      "saveError": "Konkolaataa ol kaa'uu hin dandeenye. Irra deebi'ii yaali.",
+      "deleted": "Konkolaataan milkaa'inaan haqameera!",
+      "deleteError": "Konkolaataa haquu hin dandeenye. Irra deebi'ii yaali."
+    },
+    "deleteDialog": {
+      "title": "Konkolaataa Haqi",
+      "message": "{{model}} ({{plate}}) haquu barbaaddaa?"
+    }
   },
   "settings": {
     "title": "Qindaa'ina",

@@ -5,6 +5,9 @@ import Sidebar, { MOBILE_BREAKPOINT } from "./Sidebar";
 import Navbar from "./Navbar";
 
 import { supabase } from "../lib/supabase";
+// LayoutErrorBoundary is a class component, so it can't call the
+// useTranslation hook — it reaches into the i18n instance directly instead.
+import i18n from "../i18n/i18n";
 
 const isAuthenticated = () => {
   return Boolean(
@@ -32,13 +35,13 @@ class LayoutErrorBoundary extends Component {
       return (
         <Box sx={{ p: 4, textAlign: "center" }}>
           <Typography variant="h6" gutterBottom>
-            Something went wrong loading this page.
+            {i18n.t("errors.pageCrashed")}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Try reloading. If the problem continues, the backend for this page may not be connected yet.
+            {i18n.t("errors.pageCrashedDetail")}
           </Typography>
           <Button variant="contained" onClick={() => window.location.reload()}>
-            Reload
+            {i18n.t("errors.reload")}
           </Button>
         </Box>
       );

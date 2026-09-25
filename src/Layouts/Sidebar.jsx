@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Dashboard,
   DirectionsCar,
@@ -22,23 +23,25 @@ import { signOut, getCurrentUser } from "../services/authService";
 import { roles } from "../config/permissions";
 import { getRoleLabel } from "../config/roleLabels";
 
-const ALL_MENU_ITEMS = [
-  { name: "Dashboard", path: "/dashboard", icon: <Dashboard />, roles: roles.dashboard },
-  { name: "Branches", path: "/branches", icon: <LocationCity />, roles: roles.branches },
-  { name: "Vehicles", path: "/vehicles", icon: <DirectionsCar />, roles: roles.vehicles },
-  { name: "Drivers", path: "/drivers", icon: <Person />, roles: roles.drivers },
-  { name: "Work Units", path: "/departments", icon: <Business />, roles: roles.departments },
-  { name: "Transport Requests", path: "/requests", icon: <Assignment />, roles: roles.requests },
-  { name: "Trip Management", path: "/trips", icon: <AltRoute />, roles: roles.trips },
-  { name: "Fuel", path: "/fuel", icon: <LocalGasStation />, roles: roles.fuel },
-  { name: "Maintenance", path: "/maintenance", icon: <Build />, roles: roles.maintenance },
-  { name: "Inventory", path: "/inventory", icon: <Inventory2 />, roles: roles.inventory },
-  { name: "Accidents", path: "/accidents", icon: <CarCrash />, roles: roles.accidents },
-  { name: "GPS Tracking", path: "/gps-tracking", icon: <MyLocation />, roles: roles.gps },
-  { name: "Reports", path: "/reports", icon: <Assessment />, roles: roles.reports },
-  { name: "Notifications", path: "/notifications", icon: <NotificationsIcon />, roles: roles.notifications },
-  { name: "User Management", path: "/users", icon: <Group />, roles: roles.users },
-  { name: "Settings", path: "/settings", icon: <Settings />, roles: roles.settings },
+// A function rather than a static array: it needs to be called inside the
+// component (with the live `t`) so labels re-render when the language changes.
+const getMenuItems = (t) => [
+  { name: t("sidebar.dashboard"), path: "/dashboard", icon: <Dashboard />, roles: roles.dashboard },
+  { name: t("sidebar.branches"), path: "/branches", icon: <LocationCity />, roles: roles.branches },
+  { name: t("sidebar.vehicles"), path: "/vehicles", icon: <DirectionsCar />, roles: roles.vehicles },
+  { name: t("sidebar.drivers"), path: "/drivers", icon: <Person />, roles: roles.drivers },
+  { name: t("sidebar.departments"), path: "/departments", icon: <Business />, roles: roles.departments },
+  { name: t("sidebar.transportRequests"), path: "/requests", icon: <Assignment />, roles: roles.requests },
+  { name: t("sidebar.tripManagement"), path: "/trips", icon: <AltRoute />, roles: roles.trips },
+  { name: t("sidebar.fuel"), path: "/fuel", icon: <LocalGasStation />, roles: roles.fuel },
+  { name: t("sidebar.maintenance"), path: "/maintenance", icon: <Build />, roles: roles.maintenance },
+  { name: t("sidebar.inventory"), path: "/inventory", icon: <Inventory2 />, roles: roles.inventory },
+  { name: t("sidebar.accidents"), path: "/accidents", icon: <CarCrash />, roles: roles.accidents },
+  { name: t("sidebar.gpsTracking"), path: "/gps-tracking", icon: <MyLocation />, roles: roles.gps },
+  { name: t("sidebar.reports"), path: "/reports", icon: <Assessment />, roles: roles.reports },
+  { name: t("sidebar.notifications"), path: "/notifications", icon: <NotificationsIcon />, roles: roles.notifications },
+  { name: t("sidebar.userManagement"), path: "/users", icon: <Group />, roles: roles.users },
+  { name: t("sidebar.settings"), path: "/settings", icon: <Settings />, roles: roles.settings },
 ];
 
 // Below this viewport width, the sidebar stops sitting inline in the
@@ -47,11 +50,12 @@ const ALL_MENU_ITEMS = [
 const MOBILE_BREAKPOINT = 900;
 
 const Sidebar = ({ mobileOpen = false, onClose = () => { }, isMobile = false }) => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const user = getCurrentUser();
 
-  const menu = ALL_MENU_ITEMS.filter((item) => item.roles.includes(user?.role));
+  const menu = getMenuItems(t).filter((item) => item.roles.includes(user?.role));
 
   const handleLogout = async () => {
     try {
@@ -151,7 +155,7 @@ const Sidebar = ({ mobileOpen = false, onClose = () => { }, isMobile = false }) 
             const isActive = location.pathname.startsWith(item.path);
             return (
               <Link
-                key={item.name}
+                key={item.path}
                 to={item.path}
                 onClick={handleLinkClick}
                 style={{
@@ -200,7 +204,7 @@ const Sidebar = ({ mobileOpen = false, onClose = () => { }, isMobile = false }) 
           onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
         >
           <Logout />
-          Logout
+          {t("sidebar.logout")}
         </button>
       </div>
     </>
